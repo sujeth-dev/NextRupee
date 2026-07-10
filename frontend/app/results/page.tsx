@@ -5,8 +5,10 @@ import Link from "next/link";
 import { api, type NBCAResponse, type ProfileIn } from "@/lib/api";
 import NBCACard from "@/components/NBCACard";
 import AskBox from "@/components/AskBox";
+import DemoNotice from "@/components/DemoNotice";
+import demoData from "@/lib/demoData.json";
 
-type Phase = "warming" | "loading" | "ready" | "error" | "no-profile";
+type Phase = "warming" | "loading" | "ready" | "demo" | "error" | "no-profile";
 
 /** Results: warm-up state for free-tier cold starts, then ranked cards. */
 export default function Results() {
@@ -39,7 +41,9 @@ export default function Results() {
         setData(await api.nbca(profile));
         setPhase("ready");
       } catch {
-        setPhase("error");
+        // Demo resilience: render the pre-computed hero result instead of a dead end.
+        setData(demoData as unknown as NBCAResponse);
+        setPhase("demo");
       }
     })();
   }, []);
@@ -103,6 +107,8 @@ export default function Results() {
             : "One recommendation leads; alternatives stay visible. Expand any card to trace every number."}
         </p>
       </header>
+
+      {phase === "demo" && <DemoNotice />}
 
       {data.in_distress && (
         <p className="mt-4 rounded-chip bg-warning-bg px-4 py-3 text-[14px] text-warning">

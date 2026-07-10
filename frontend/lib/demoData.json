@@ -1,0 +1,104 @@
+{
+  "cards": [
+    {
+      "action": "Prepay the 42% APR debt \u2014 every rupee here earns a guaranteed 42%",
+      "category": "debt",
+      "amount_range": [
+        120000,
+        120000
+      ],
+      "rationale_chain": [
+        "Prepayment returns 42% guaranteed, tax-free",
+        "The best long-run asset-class expectation is ~12% \u2014 and it is not guaranteed",
+        "Carrying this balance costs \u20b950,400 a year"
+      ],
+      "evidence": [
+        {
+          "claim": "Interest paid over one year on \u20b91,20,000 at 42% APR",
+          "source": "rules_engine",
+          "ref": "calc:debt_annual_interest",
+          "value": "\u20b950,400"
+        },
+        {
+          "claim": "Deployable = savings above 3-month floor (\u20b92,20,000) + this month's surplus",
+          "source": "rules_engine",
+          "ref": "calc:deployable_cash",
+          "value": "\u20b92,60,000"
+        },
+        {
+          "claim": "Expected long-run returns used for comparison: equity 12%, fixed_income 7%, gold 8%",
+          "source": "rules_engine",
+          "ref": "calc:expected_returns_table",
+          "value": null
+        }
+      ],
+      "confidence": "high",
+      "confidence_basis": "APR vs. expected-return comparison is arithmetic, not forecast",
+      "invalidation_conditions": [
+        "Debt APR drops below 10%",
+        "Balance is cleared"
+      ],
+      "alternatives": [
+        "Restructure to a lower rate if prepayment capacity is thin"
+      ],
+      "opportunity_cost": "Rupees sent to debt skip the market \u2014 but 42% guaranteed beats every expected alternative",
+      "degraded": true
+    },
+    {
+      "action": "Invest your monthly surplus of \u20b940,000 as 55% equity, 30% fixed income, 15% gold (asset classes, not instruments)",
+      "category": "invest_allocation",
+      "amount_range": [
+        40000,
+        40000
+      ],
+      "rationale_chain": [
+        "Foundations (buffer, cover, expensive debt) are handled",
+        "A medium-risk split balances growth against drawdown you can tolerate",
+        "Asset-class level keeps the decision structural, not speculative"
+      ],
+      "evidence": [
+        {
+          "claim": "Monthly surplus = income \u20b91,00,000 \u2212 expenses \u20b960,000",
+          "source": "rules_engine",
+          "ref": "calc:monthly_surplus",
+          "value": "\u20b940,000"
+        },
+        {
+          "claim": "Allocation for medium risk tolerance: 55% equity, 30% fixed income, 15% gold",
+          "source": "rules_engine",
+          "ref": "calc:allocation_split",
+          "value": "55/30/15"
+        }
+      ],
+      "confidence": "medium",
+      "confidence_basis": "Split follows your stated risk tolerance; market outcomes are not guaranteed",
+      "invalidation_conditions": [
+        "Risk tolerance changes",
+        "Any distress trigger fires (surplus, runway, debt service)"
+      ],
+      "alternatives": [
+        "Step allocation in over 3\u20136 months rather than at once"
+      ],
+      "opportunity_cost": "Holding the surplus as cash instead cedes expected real returns to inflation",
+      "degraded": true
+    }
+  ],
+  "in_distress": false,
+  "gold_adjustment_pts": 0,
+  "confidence_cap": "high",
+  "data_freshness": {
+    "import_duty": {
+      "asof": "2025-02-01",
+      "days_old": 524,
+      "status": "fresh"
+    },
+    "domestic_premium": {
+      "asof": "2025-02-01",
+      "days_old": 524,
+      "status": "fresh"
+    }
+  },
+  "model": "deterministic-fallback",
+  "prompt_version": "v1",
+  "degraded_count": 2
+}

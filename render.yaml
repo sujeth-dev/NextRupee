@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: nextrupee-api
+    runtime: docker
+    rootDir: backend
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: prod
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: LLM_API_KEY
+        sync: false
+      - key: FRED_API_KEY
+        sync: false
+      - key: LLM_MODEL
+        value: z-ai/glm-4.5-air:free
+      - key: LLM_FALLBACK_MODEL
+        value: meta-llama/llama-3.3-70b-instruct:free

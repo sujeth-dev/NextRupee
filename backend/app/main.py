@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import routes_health, routes_profile
+from app.middleware import rate_limit_middleware
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 
@@ -22,6 +23,7 @@ def create_app() -> FastAPI:
             "no specific instruments, ever."
         ),
     )
+    app.middleware("http")(rate_limit_middleware)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],  # tightened to the Vercel domain at deploy time via env

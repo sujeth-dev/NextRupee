@@ -51,3 +51,16 @@ Append-only. Reference before making new architectural decisions. Format: Decisi
 ## D-010 — Gold regime signal bounded to ±5pts of gold allocation
 - **Reasoning:** Master Doc §5.5 — the one place the engine touches ranking, deliberately bounded. Signal derived from real-yield + USD + INR momentum direction; clamped in code and property-tested.
 - **Final:** `regime_adjustment() ∈ {-5, 0, +5}`. — 2026-07-10
+
+## D-011 — Feed fetchers: plain httpx against FRED/Yahoo endpoints (not the yfinance lib)
+- **Reasoning:** Same data endpoints yfinance wraps, minus a heavyweight dependency; fetchers are ~10 lines each, cache-backed, and independently testable. The Master Doc's intent (free live feeds) is preserved.
+- **Trade-offs:** No yfinance conveniences; acceptable for 5 drivers.
+- **Final:** `gold/feeds.py` httpx fetchers. — 2026-07-10
+
+## D-012 — Python floor 3.10, deployment target 3.12
+- **Reasoning:** Locked deployment target stays 3.12 (Dockerfile, CI). The dev environment used for verification caps at 3.10, so the code avoids 3.11+-only APIs; the floor is declared honestly in pyproject.
+- **Final:** `requires-python >=3.10`; CI and Docker pin 3.12. — 2026-07-10
+
+## D-013 — Demo resilience: bundled pre-computed hero result
+- **Reasoning:** Master Doc §10 — Render free tier sleeps. The results page shows a warm-up state with retries; if the API stays unreachable, it renders a committed, engine-generated sample response (clearly labelled) instead of a dead end.
+- **Final:** `frontend/lib/demoData.json` + labelled demo state. — 2026-07-10
