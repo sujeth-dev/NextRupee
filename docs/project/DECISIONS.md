@@ -26,7 +26,7 @@ Append-only. Reference before making new architectural decisions. Format: Decisi
 - **Final:** DB-touching `/health`. — 2026-07-10
 
 ## D-005 — Vector store: Chroma behind a `VectorStore` interface; deterministic in-memory store for CI
-- **Reasoning:** Master Doc locks Chroma (local persistent) for the product. CI Tier 0/1 must be free and fast, so tests run against an in-memory store with a deterministic local embedding (hashing-based) — no network, no model download. Same interface, same retrieval logic under test.
+- **Reasoning:** Master Doc locks Chroma (local persistent) for the product. CI Tier 0/1 must be free and fast, so tests run against an in-memory store with deterministic TF-IDF cosine scoring (a hashed-embedding variant was tried first and retrieved poorly on sparse queries) — no network, no model download. Same interface, same retrieval logic under test.
 - **Alternatives:** Chroma-in-CI (heavy install, embedding downloads), FAISS (another dep).
 - **Trade-offs:** CI doesn't exercise Chroma internals; acceptable — retrieval logic (graph-then-vector, tag filtering, chunk ids) is what's ours and it's fully covered.
 - **Final:** `VectorStore` protocol; `ChromaStore` (prod) + `MemoryStore` (CI). — 2026-07-10
