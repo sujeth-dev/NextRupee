@@ -5,7 +5,12 @@ from __future__ import annotations
 import pytest
 
 from app.guardrails.input_guard import screen_input
-from app.guardrails.output_guard import allowed_numbers, diff_numbers, scan_instruments, screen_output
+from app.guardrails.output_guard import (
+    allowed_numbers,
+    diff_numbers,
+    scan_instruments,
+    screen_output,
+)
 from app.schemas.nbca import Evidence
 
 BLOCKED_INPUTS = [

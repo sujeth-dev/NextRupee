@@ -1,0 +1,992 @@
+[
+  {
+    "name": "hero-diwali",
+    "profile": {
+      "session_id": "golden-hero-diwali",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 400000,
+      "hi_debt_amount": 120000,
+      "hi_debt_apr": 42.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "debt",
+      "invest_allocation"
+    ],
+    "note": "October \u20b960K question: 42% APR beats gold"
+  },
+  {
+    "name": "hero-no-debt",
+    "profile": {
+      "session_id": "golden-hero-no-debt",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 400000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "invest_allocation"
+    ],
+    "note": "Same household, debt cleared: invest"
+  },
+  {
+    "name": "hero-low-apr",
+    "profile": {
+      "session_id": "golden-hero-low-apr",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 400000,
+      "hi_debt_amount": 120000,
+      "hi_debt_apr": 8.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "invest_allocation"
+    ],
+    "note": "8% APR is below the 10% prepay line"
+  },
+  {
+    "name": "hero-apr-exactly-10",
+    "profile": {
+      "session_id": "golden-hero-apr-exactly-10",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 400000,
+      "hi_debt_amount": 120000,
+      "hi_debt_apr": 10.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "debt",
+      "invest_allocation"
+    ],
+    "note": "APR exactly 10 \u21d2 prepay applies"
+  },
+  {
+    "name": "deficit-simple",
+    "profile": {
+      "session_id": "golden-deficit-simple",
+      "monthly_income": 50000,
+      "monthly_expenses": 60000,
+      "cash_savings": 200000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "stabilize"
+    ],
+    "note": "Negative surplus \u21d2 stabilize only"
+  },
+  {
+    "name": "breakeven",
+    "profile": {
+      "session_id": "golden-breakeven",
+      "monthly_income": 60000,
+      "monthly_expenses": 60000,
+      "cash_savings": 200000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "stabilize"
+    ],
+    "note": "Surplus exactly zero triggers"
+  },
+  {
+    "name": "deficit-with-debt",
+    "profile": {
+      "session_id": "golden-deficit-with-debt",
+      "monthly_income": 50000,
+      "monthly_expenses": 60000,
+      "cash_savings": 200000,
+      "hi_debt_amount": 100000,
+      "hi_debt_apr": 36.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "stabilize",
+      "debt"
+    ],
+    "note": "Deficit + debt \u21d2 stabilize then restructure"
+  },
+  {
+    "name": "deficit-no-runway",
+    "profile": {
+      "session_id": "golden-deficit-no-runway",
+      "monthly_income": 50000,
+      "monthly_expenses": 60000,
+      "cash_savings": 10000,
+      "hi_debt_amount": 80000,
+      "hi_debt_apr": 40.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "stabilize",
+      "emergency_fund",
+      "debt"
+    ],
+    "note": "Full distress cascade in fixed order"
+  },
+  {
+    "name": "surplus-one-rupee",
+    "profile": {
+      "session_id": "golden-surplus-one-rupee",
+      "monthly_income": 60001,
+      "monthly_expenses": 60000,
+      "cash_savings": 400000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "invest_allocation"
+    ],
+    "note": "\u20b91 surplus, healthy otherwise \u21d2 normal mode"
+  },
+  {
+    "name": "debt-service-41pct",
+    "profile": {
+      "session_id": "golden-debt-service-41pct",
+      "monthly_income": 100000,
+      "monthly_expenses": 50000,
+      "cash_savings": 400000,
+      "hi_debt_amount": 1030000,
+      "hi_debt_apr": 48.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "stabilize",
+      "debt"
+    ],
+    "note": "Interest 41,200 > 40% of income \u21d2 distress"
+  },
+  {
+    "name": "debt-service-exactly-40",
+    "profile": {
+      "session_id": "golden-debt-service-exactly-40",
+      "monthly_income": 100000,
+      "monthly_expenses": 50000,
+      "cash_savings": 400000,
+      "hi_debt_amount": 1000000,
+      "hi_debt_apr": 48.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "debt"
+    ],
+    "note": "Interest exactly 40,000 = 40% does NOT trigger debt-service, but overhang does (1M > 6\u00d750k) \u21d2 distress restructure card only"
+  },
+  {
+    "name": "runway-zero",
+    "profile": {
+      "session_id": "golden-runway-zero",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 0,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund"
+    ],
+    "note": "No savings \u21d2 runway trigger, 1-month buffer card"
+  },
+  {
+    "name": "runway-one-rupee-short",
+    "profile": {
+      "session_id": "golden-runway-one-rupee-short",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 59999,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund"
+    ],
+    "note": "\u20b91 short of one month triggers"
+  },
+  {
+    "name": "runway-exactly-one-month",
+    "profile": {
+      "session_id": "golden-runway-exactly-one-month",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 60000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "Exactly 1 month: no distress; EF<3m leads, invest follows in normal mode"
+  },
+  {
+    "name": "overhang",
+    "profile": {
+      "session_id": "golden-overhang",
+      "monthly_income": 100000,
+      "monthly_expenses": 90000,
+      "cash_savings": 400000,
+      "hi_debt_amount": 100000,
+      "hi_debt_apr": 12.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "debt"
+    ],
+    "note": "Debt 100k > 6\u00d710k surplus \u21d2 distress restructure"
+  },
+  {
+    "name": "overhang-boundary-clear",
+    "profile": {
+      "session_id": "golden-overhang-boundary-clear",
+      "monthly_income": 100000,
+      "monthly_expenses": 90000,
+      "cash_savings": 400000,
+      "hi_debt_amount": 60000,
+      "hi_debt_apr": 12.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "debt",
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "Debt exactly 6\u00d7surplus does NOT trigger; prepay leads, then EF 3\u21926 (runway 4.4 months), then invest"
+  },
+  {
+    "name": "ef-only",
+    "profile": {
+      "session_id": "golden-ef-only",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 100000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "1.67 months runway \u21d2 EF to 3m first"
+  },
+  {
+    "name": "insurance-only",
+    "profile": {
+      "session_id": "golden-insurance-only",
+      "monthly_income": 150000,
+      "monthly_expenses": 80000,
+      "cash_savings": 500000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": true,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "insurance",
+      "invest_allocation"
+    ],
+    "note": "Dependents without term cover"
+  },
+  {
+    "name": "insured-dependents",
+    "profile": {
+      "session_id": "golden-insured-dependents",
+      "monthly_income": 150000,
+      "monthly_expenses": 80000,
+      "cash_savings": 500000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": true,
+      "term_insurance": true,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "invest_allocation"
+    ],
+    "note": "Cover in place \u21d2 no insurance card"
+  },
+  {
+    "name": "ef-stage2",
+    "profile": {
+      "session_id": "golden-ef-stage2",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 240000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "4 months runway \u21d2 EF 3\u21926 stage-2 card"
+  },
+  {
+    "name": "ef-exactly-6m",
+    "profile": {
+      "session_id": "golden-ef-exactly-6m",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 360000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "invest_allocation"
+    ],
+    "note": "Exactly 6 months \u21d2 no EF card"
+  },
+  {
+    "name": "full-stack",
+    "profile": {
+      "session_id": "golden-full-stack",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 100000,
+      "hi_debt_amount": 100000,
+      "hi_debt_apr": 18.0,
+      "dependents": true,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "insurance",
+      "debt",
+      "invest_allocation"
+    ],
+    "note": "All four needs \u21d2 strict hierarchy order"
+  },
+  {
+    "name": "stack-no-insurance",
+    "profile": {
+      "session_id": "golden-stack-no-insurance",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 100000,
+      "hi_debt_amount": 100000,
+      "hi_debt_apr": 18.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "debt",
+      "invest_allocation"
+    ],
+    "note": ""
+  },
+  {
+    "name": "stack-high-apr",
+    "profile": {
+      "session_id": "golden-stack-high-apr",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 100000,
+      "hi_debt_amount": 100000,
+      "hi_debt_apr": 44.0,
+      "dependents": true,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "insurance",
+      "debt",
+      "invest_allocation"
+    ],
+    "note": "Tier order must hold even at 44% APR (no tier crossing)"
+  },
+  {
+    "name": "risk-low",
+    "profile": {
+      "session_id": "golden-risk-low",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 400000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "low",
+      "goals": []
+    },
+    "expected_categories": [
+      "invest_allocation"
+    ],
+    "note": "35/50/15 split"
+  },
+  {
+    "name": "risk-high",
+    "profile": {
+      "session_id": "golden-risk-high",
+      "monthly_income": 100000,
+      "monthly_expenses": 60000,
+      "cash_savings": 400000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "high",
+      "goals": []
+    },
+    "expected_categories": [
+      "invest_allocation"
+    ],
+    "note": "70/20/10 split"
+  },
+  {
+    "name": "sweep-healthy-40000",
+    "profile": {
+      "session_id": "golden-sweep-healthy-40000",
+      "monthly_income": 40000,
+      "monthly_expenses": 28000,
+      "cash_savings": 196000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "invest_allocation"
+    ],
+    "note": "sweep: healthy"
+  },
+  {
+    "name": "sweep-thinbuffer-40000",
+    "profile": {
+      "session_id": "golden-sweep-thinbuffer-40000",
+      "monthly_income": 40000,
+      "monthly_expenses": 28000,
+      "cash_savings": 56000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "sweep: EF first"
+  },
+  {
+    "name": "sweep-ccdebt-40000",
+    "profile": {
+      "session_id": "golden-sweep-ccdebt-40000",
+      "monthly_income": 40000,
+      "monthly_expenses": 28000,
+      "cash_savings": 196000,
+      "hi_debt_amount": 48000,
+      "hi_debt_apr": 40.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "debt",
+      "invest_allocation"
+    ],
+    "note": "sweep: prepay first"
+  },
+  {
+    "name": "sweep-deficit-40000",
+    "profile": {
+      "session_id": "golden-sweep-deficit-40000",
+      "monthly_income": 40000,
+      "monthly_expenses": 44000,
+      "cash_savings": 28000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "stabilize",
+      "emergency_fund"
+    ],
+    "note": "sweep: deficit + sub-month runway buffer card"
+  },
+  {
+    "name": "sweep-uncovered-40000",
+    "profile": {
+      "session_id": "golden-sweep-uncovered-40000",
+      "monthly_income": 40000,
+      "monthly_expenses": 28000,
+      "cash_savings": 196000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": true,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "insurance",
+      "invest_allocation"
+    ],
+    "note": "sweep: cover gap"
+  },
+  {
+    "name": "sweep-ef2-40000",
+    "profile": {
+      "session_id": "golden-sweep-ef2-40000",
+      "monthly_income": 40000,
+      "monthly_expenses": 28000,
+      "cash_savings": 112000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "sweep: EF 3\u21926"
+  },
+  {
+    "name": "sweep-healthy-75000",
+    "profile": {
+      "session_id": "golden-sweep-healthy-75000",
+      "monthly_income": 75000,
+      "monthly_expenses": 52500,
+      "cash_savings": 367500,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "invest_allocation"
+    ],
+    "note": "sweep: healthy"
+  },
+  {
+    "name": "sweep-thinbuffer-75000",
+    "profile": {
+      "session_id": "golden-sweep-thinbuffer-75000",
+      "monthly_income": 75000,
+      "monthly_expenses": 52500,
+      "cash_savings": 105000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "sweep: EF first"
+  },
+  {
+    "name": "sweep-ccdebt-75000",
+    "profile": {
+      "session_id": "golden-sweep-ccdebt-75000",
+      "monthly_income": 75000,
+      "monthly_expenses": 52500,
+      "cash_savings": 367500,
+      "hi_debt_amount": 90000,
+      "hi_debt_apr": 40.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "debt",
+      "invest_allocation"
+    ],
+    "note": "sweep: prepay first"
+  },
+  {
+    "name": "sweep-deficit-75000",
+    "profile": {
+      "session_id": "golden-sweep-deficit-75000",
+      "monthly_income": 75000,
+      "monthly_expenses": 82500,
+      "cash_savings": 52500,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "stabilize",
+      "emergency_fund"
+    ],
+    "note": "sweep: deficit + sub-month runway buffer card"
+  },
+  {
+    "name": "sweep-uncovered-75000",
+    "profile": {
+      "session_id": "golden-sweep-uncovered-75000",
+      "monthly_income": 75000,
+      "monthly_expenses": 52500,
+      "cash_savings": 367500,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": true,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "insurance",
+      "invest_allocation"
+    ],
+    "note": "sweep: cover gap"
+  },
+  {
+    "name": "sweep-ef2-75000",
+    "profile": {
+      "session_id": "golden-sweep-ef2-75000",
+      "monthly_income": 75000,
+      "monthly_expenses": 52500,
+      "cash_savings": 210000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "sweep: EF 3\u21926"
+  },
+  {
+    "name": "sweep-healthy-150000",
+    "profile": {
+      "session_id": "golden-sweep-healthy-150000",
+      "monthly_income": 150000,
+      "monthly_expenses": 105000,
+      "cash_savings": 735000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "invest_allocation"
+    ],
+    "note": "sweep: healthy"
+  },
+  {
+    "name": "sweep-thinbuffer-150000",
+    "profile": {
+      "session_id": "golden-sweep-thinbuffer-150000",
+      "monthly_income": 150000,
+      "monthly_expenses": 105000,
+      "cash_savings": 210000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "sweep: EF first"
+  },
+  {
+    "name": "sweep-ccdebt-150000",
+    "profile": {
+      "session_id": "golden-sweep-ccdebt-150000",
+      "monthly_income": 150000,
+      "monthly_expenses": 105000,
+      "cash_savings": 735000,
+      "hi_debt_amount": 180000,
+      "hi_debt_apr": 40.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "debt",
+      "invest_allocation"
+    ],
+    "note": "sweep: prepay first"
+  },
+  {
+    "name": "sweep-deficit-150000",
+    "profile": {
+      "session_id": "golden-sweep-deficit-150000",
+      "monthly_income": 150000,
+      "monthly_expenses": 165000,
+      "cash_savings": 105000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "stabilize",
+      "emergency_fund"
+    ],
+    "note": "sweep: deficit + sub-month runway buffer card"
+  },
+  {
+    "name": "sweep-uncovered-150000",
+    "profile": {
+      "session_id": "golden-sweep-uncovered-150000",
+      "monthly_income": 150000,
+      "monthly_expenses": 105000,
+      "cash_savings": 735000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": true,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "insurance",
+      "invest_allocation"
+    ],
+    "note": "sweep: cover gap"
+  },
+  {
+    "name": "sweep-ef2-150000",
+    "profile": {
+      "session_id": "golden-sweep-ef2-150000",
+      "monthly_income": 150000,
+      "monthly_expenses": 105000,
+      "cash_savings": 420000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "sweep: EF 3\u21926"
+  },
+  {
+    "name": "sweep-healthy-300000",
+    "profile": {
+      "session_id": "golden-sweep-healthy-300000",
+      "monthly_income": 300000,
+      "monthly_expenses": 210000,
+      "cash_savings": 1470000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "invest_allocation"
+    ],
+    "note": "sweep: healthy"
+  },
+  {
+    "name": "sweep-thinbuffer-300000",
+    "profile": {
+      "session_id": "golden-sweep-thinbuffer-300000",
+      "monthly_income": 300000,
+      "monthly_expenses": 210000,
+      "cash_savings": 420000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "sweep: EF first"
+  },
+  {
+    "name": "sweep-ccdebt-300000",
+    "profile": {
+      "session_id": "golden-sweep-ccdebt-300000",
+      "monthly_income": 300000,
+      "monthly_expenses": 210000,
+      "cash_savings": 1470000,
+      "hi_debt_amount": 360000,
+      "hi_debt_apr": 40.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "debt",
+      "invest_allocation"
+    ],
+    "note": "sweep: prepay first"
+  },
+  {
+    "name": "sweep-deficit-300000",
+    "profile": {
+      "session_id": "golden-sweep-deficit-300000",
+      "monthly_income": 300000,
+      "monthly_expenses": 330000,
+      "cash_savings": 210000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "stabilize",
+      "emergency_fund"
+    ],
+    "note": "sweep: deficit + sub-month runway buffer card"
+  },
+  {
+    "name": "sweep-uncovered-300000",
+    "profile": {
+      "session_id": "golden-sweep-uncovered-300000",
+      "monthly_income": 300000,
+      "monthly_expenses": 210000,
+      "cash_savings": 1470000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": true,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "insurance",
+      "invest_allocation"
+    ],
+    "note": "sweep: cover gap"
+  },
+  {
+    "name": "sweep-ef2-300000",
+    "profile": {
+      "session_id": "golden-sweep-ef2-300000",
+      "monthly_income": 300000,
+      "monthly_expenses": 210000,
+      "cash_savings": 840000,
+      "hi_debt_amount": 0,
+      "hi_debt_apr": 0.0,
+      "dependents": false,
+      "term_insurance": false,
+      "risk_tolerance": "medium",
+      "goals": []
+    },
+    "expected_categories": [
+      "emergency_fund",
+      "invest_allocation"
+    ],
+    "note": "sweep: EF 3\u21926"
+  }
+]

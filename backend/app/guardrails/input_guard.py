@@ -9,9 +9,11 @@ from dataclasses import dataclass
 
 #: Phrasings that ask for instrument-level picks.
 _INSTRUMENT_PATTERNS: list[re.Pattern[str]] = [re.compile(p, re.IGNORECASE) for p in [
-    r"\bwhich (stock|share|scrip|fund|mutual fund|etf|scheme|coin|crypto|token|ipo)s?\b",
+    r"\bwhich (?:\w+ ){0,2}"
+    r"(stock|share|scrip|fund|mutual fund|etf|scheme|coin|crypto|token|ipo)s?\b",
     r"\bwhat (stock|share|fund|etf|coin|crypto)s? (should|do|can|to)\b",
-    r"\b(best|top|good) (stock|share|fund|mutual fund|etf|scheme|coin|crypto|token|ipo)s?\b",
+    r"\b(best|top|good) (?:\d+ )?"
+    r"(stock|share|fund|mutual fund|etf|scheme|coin|crypto|token|ipo)s?\b",
     r"\b(recommend|suggest|name|pick|tip)\w* .{0,40}"
     r"\b(stock|share|fund|etf|scheme|coin|crypto|token)s?\b",
     r"\b(stock|share|crypto|coin) (tip|pick|recommendation)s?\b",
