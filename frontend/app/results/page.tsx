@@ -7,13 +7,17 @@ import NBCACard from "@/components/NBCACard";
 import AskBox from "@/components/AskBox";
 import DemoNotice from "@/components/DemoNotice";
 import demoData from "@/lib/demoData.json";
+import { goalLabel } from "@/lib/goals";
 
 type Phase = "warming" | "loading" | "ready" | "demo" | "error" | "no-profile";
 
-/** Results: warm-up state for free-tier cold starts, then ranked cards. */
+/** Results: warm-up state for free-tier cold starts, then the top action
+ *  front and centre — other ranked options behind a quiet expander. */
 export default function Results() {
   const [phase, setPhase] = useState<Phase>("warming");
   const [data, setData] = useState<NBCAResponse | null>(null);
+  const [goal, setGoal] = useState<string | null>(null);
+  const [showOthers, setShowOthers] = useState(false);
   const started = useRef(false);
 
   useEffect(() => {
@@ -26,6 +30,7 @@ export default function Results() {
       return;
     }
     const profile = JSON.parse(raw) as ProfileIn;
+    setGoal(profile.goals?.length ? goalLabel(profile.goals[0]) : null);
 
     (async () => {
       const healthy = await api.health();
@@ -65,7 +70,7 @@ export default function Results() {
       <div className="mx-auto max-w-xl py-24 text-center" role="status" aria-live="polite">
         <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-border-strong border-t-indigo-600" />
         <h1 className="mt-6 font-display text-xl font-semibold text-ink">
-          {phase === "warming" ? "Waking the engine" : "Running the arithmetic"}
+          {phase === "warming" ? "Waking the engine" : "Crunching your numbers"}
         </h1>
         <p className="mt-2 text-[14px] text-ink-3">
           {phase === "warming"
@@ -96,15 +101,15 @@ export default function Results() {
     <div className="mx-auto max-w-3xl py-10">
       <header>
         <p className="font-mono text-[13px] font-medium uppercase tracking-widest text-indigo-600">
-          Your ranked next actions
+          {goal ? `Building toward: ${goal}` : "Your next best move"}
         </p>
         <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight text-ink">
-          {data.in_distress ? "Stabilize first — here's the order" : "Do these, in this order"}
+          {data.in_distress ? "Get steady first — here's how" : "Do this first"}
         </h1>
         <p className="mt-2 text-[15px] text-ink-2">
           {data.in_distress
-            ? "Your numbers tripped a stabilization rule, so investing is off the table until the base is safe. Every card shows why."
-            : "One recommendation leads; alternatives stay visible. Expand any card to trace every number."}
+            ? "Your numbers show the base needs securing before any investing — a rule decided that, not a judgement call. Every card shows why."
+            : "One clear move leads. Open Details to see every number and why it's there."}
         </p>
       </header>
 
@@ -112,7 +117,7 @@ export default function Results() {
 
       {data.in_distress && (
         <p className="mt-4 rounded-chip bg-warning-bg px-4 py-3 text-[14px] text-warning">
-          Stabilization mode: investment allocations are suppressed by rule, not by judgement.
+          Safety first: investing is paused by a fixed rule until your base is steady — not by opinion.
         </p>
       )}
 
@@ -124,9 +129,22 @@ export default function Results() {
       )}
 
       <div className="mt-8 space-y-4">
-        {data.cards.map((card, i) => (
-          <NBCACard key={i} card={card} rank={i + 1} />
-        ))}
+        <NBCACard card={data.cards[0]} rank={1} />
+
+        {data.cards.length > 1 && !showOthers && (
+          <p className="text-center">
+            <button
+              type="button"
+              className="font-sans text-[14px] font-medium text-indigo-600 hover:text-indigo-700"
+              onClick={() => setShowOthers(true)}
+            >
+              See {data.cards.length - 1} other option{data.cards.length > 2 ? "s" : ""} ▾
+            </button>
+          </p>
+        )}
+
+        {showOthers &&
+          data.cards.slice(1).map((card, i) => <NBCACard key={i + 1} card={card} rank={i + 2} />)}
       </div>
 
       <div className="mt-12">

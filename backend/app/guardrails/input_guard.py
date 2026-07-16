@@ -37,6 +37,8 @@ class InputVerdict:
     reason: str | None = None
 
 
+REFUSAL_HEADLINE = "NextRupee doesn't pick stocks, funds, or coins."
+
 REFUSAL_TEXT = (
     "NextRupee doesn't recommend specific stocks, funds, or coins — that line is where "
     "decision support ends and regulated investment advice begins. What it can show you "

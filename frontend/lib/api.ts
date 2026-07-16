@@ -48,6 +48,11 @@ export interface ProfileIn {
 }
 
 export interface AskResponse {
+  /** One-line, plain-language answer. */
+  headline: string;
+  /** Grounded explanation with inline [chunk-id]/[driver:id] citations. */
+  detail: string;
+  /** Deprecated: headline + detail concatenated; kept for older consumers. */
   answer: string;
   citations: string[];
   refused: boolean;

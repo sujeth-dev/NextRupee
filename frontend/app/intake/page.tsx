@@ -6,16 +6,9 @@ import CurrencyInput from "@/components/CurrencyInput";
 import ChoiceCards from "@/components/ChoiceCards";
 import BinaryChoice from "@/components/BinaryChoice";
 import type { ProfileIn } from "@/lib/api";
+import { GOALS } from "@/lib/goals";
 
 type Risk = "low" | "medium" | "high";
-
-const GOALS = [
-  { id: "diwali_gold", label: "Gold for Diwali" },
-  { id: "emergency", label: "Feel financially safe" },
-  { id: "debt_free", label: "Get out of debt" },
-  { id: "wealth", label: "Grow long-term wealth" },
-  { id: "big_purchase", label: "A big purchase soon" },
-];
 
 const STEPS = ["Cash flow", "Safety", "Household", "Preferences"] as const;
 

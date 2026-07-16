@@ -60,7 +60,11 @@ class TestAskEndpoint:
         assert r.status_code == 200
         body = r.json()
         assert body["refused"] is True
-        assert "doesn't recommend specific stocks" in body["answer"]
+        assert body["headline"] == "NextRupee doesn't pick stocks, funds, or coins."
+        assert "doesn't recommend specific stocks" in body["detail"]
+        # legacy field stays populated: headline + detail
+        assert body["answer"].startswith(body["headline"])
+        assert body["detail"] in body["answer"]
 
     def test_gold_question_grounded_fallback(self, client):
         r = client.post("/api/ask", json={"question": "why is gold expensive right now?"})
@@ -69,6 +73,11 @@ class TestAskEndpoint:
         assert body["degraded"] is True  # offline mode
         assert body["citations"], "chunk citations expected"
         assert "#" in body["citations"][0]
+        # split response: plain one-liner + cited detail, answer = concatenation
+        assert body["headline"]
+        assert "[" not in body["headline"], "headline must carry no citations"
+        assert "[" in body["detail"], "detail must carry citations"
+        assert body["answer"] == f'{body["headline"]}\n\n{body["detail"]}'
 
     def test_short_question_422(self, client):
         assert client.post("/api/ask", json={"question": "hi"}).status_code == 422

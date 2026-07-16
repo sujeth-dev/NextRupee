@@ -16,7 +16,9 @@ class AskRequest(BaseModel):
 
 
 class AskResponse(BaseModel):
-    answer: str
+    headline: str = Field(description="one-line, plain-language answer")
+    detail: str = Field(description="grounded explanation with inline citations")
+    answer: str = Field(description="deprecated: headline + detail; kept for older consumers")
     citations: list[str]
     refused: bool
     degraded: bool
