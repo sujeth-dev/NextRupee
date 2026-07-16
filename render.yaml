@@ -17,6 +17,6 @@ services:
       - key: FRED_API_KEY
         sync: false
       - key: LLM_MODEL
-        value: z-ai/glm-4.5-air:free
+        value: openai/gpt-oss-20b:free
       - key: LLM_FALLBACK_MODEL
         value: meta-llama/llama-3.3-70b-instruct:free

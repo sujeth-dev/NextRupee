@@ -56,7 +56,7 @@ class Settings(BaseSettings):
     # limits (~20 req/min, ~200 req/day per model) — hence the fallback chain.
     llm_base_url: str = "https://openrouter.ai/api/v1"
     llm_api_key: str = ""
-    llm_model: str = "z-ai/glm-4.5-air:free"
+    llm_model: str = "openai/gpt-oss-20b:free"
     llm_fallback_model: str = "meta-llama/llama-3.3-70b-instruct:free"
     llm_temperature: float = 0.2
     llm_daily_request_cap: int = 180  # below the ~200/day free ceiling
