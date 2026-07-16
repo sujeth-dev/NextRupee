@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { api, type AskResponse } from "@/lib/api";
+import { INSTRUMENTS } from "@/lib/instruments";
+import InstrumentIcon from "@/components/InstrumentIcon";
 
 /** Shown before "More questions" is opened: one from each theme, mixed. */
 const FEATURED = [
@@ -98,6 +100,29 @@ export default function AskBox() {
       <p className="mt-1 text-[13px] text-ink-3">
         Answers cite live drivers and source documents. No instrument picks — ever.
       </p>
+
+      <div className="mt-4">
+        <p className="mb-2 font-mono text-[11px] font-medium uppercase tracking-widest text-ink-3">
+          Where money can go — tap to learn
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {INSTRUMENTS.map((it) => (
+            <button
+              key={it.kind}
+              type="button"
+              className="group flex items-center gap-2 rounded-full border border-border-strong bg-white py-1.5 pl-1.5 pr-3.5 font-sans text-[13px] text-ink-2 transition-colors hover:border-indigo-300 hover:text-indigo-700 disabled:opacity-50"
+              disabled={busy}
+              onClick={() => {
+                setQuestion(it.question);
+                void submit(it.question);
+              }}
+            >
+              <InstrumentIcon kind={it.kind} className="h-7 w-7" />
+              {it.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <form
         className="mt-4 flex gap-2"
