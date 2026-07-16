@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { api, type NBCAResponse, type ProfileIn } from "@/lib/api";
 import NBCACard from "@/components/NBCACard";
+import AllocationPanel from "@/components/AllocationPanel";
 import AskBox from "@/components/AskBox";
 import DemoNotice from "@/components/DemoNotice";
 import demoData from "@/lib/demoData.json";
@@ -203,7 +204,13 @@ export default function Results() {
           data.cards.slice(1).map((card, i) => <NBCACard key={i + 1} card={card} rank={i + 2} />)}
       </div>
 
-      <div className="reveal reveal-3 mt-12">
+      {data.allocation && (
+        <div className="reveal reveal-3 mt-8">
+          <AllocationPanel allocation={data.allocation} />
+        </div>
+      )}
+
+      <div className="reveal reveal-4 mt-12">
         <AskBox />
       </div>
 

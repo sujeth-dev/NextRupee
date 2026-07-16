@@ -23,6 +23,27 @@ export interface NBCA {
   degraded: boolean;
 }
 
+export interface AllocationSlice {
+  kind: "cash" | "fd" | "bonds" | "smallsavings" | "equity" | "index" | "gold" | "commodities" | "realestate";
+  label: string;
+  pct: number;
+  monthly_amount: number;
+  note: string;
+  expected_return_pct: number;
+}
+
+export interface Allocation {
+  available: boolean;
+  reason: string | null;
+  monthly_investable: number;
+  risk_tolerance: string;
+  risk_label: string;
+  gold_adjustment_pts: number;
+  foundations_pending: boolean;
+  foundations_note: string | null;
+  slices: AllocationSlice[];
+}
+
 export interface NBCAResponse {
   cards: NBCA[];
   in_distress: boolean;
@@ -32,6 +53,7 @@ export interface NBCAResponse {
   model: string;
   prompt_version: string;
   degraded_count: number;
+  allocation: Allocation;
 }
 
 export interface ProfileIn {

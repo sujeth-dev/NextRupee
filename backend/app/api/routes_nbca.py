@@ -11,6 +11,7 @@ from app.gold.feeds import confidence_cap, freshness_report
 from app.gold.regime import regime_adjustment
 from app.llm.client import get_client
 from app.llm.explain import generate_card, prompt_version
+from app.rules.allocation import Allocation, compute_allocation
 from app.rules.distress import assess_distress
 from app.rules.engine import rank
 from app.schemas.nbca import NBCA
@@ -37,6 +38,7 @@ class NBCAResponse(BaseModel):
     model: str
     prompt_version: str
     degraded_count: int
+    allocation: Allocation
 
 
 @router.post("/nbca", response_model=NBCAResponse)
@@ -87,4 +89,5 @@ def generate_nbca(body: NBCARequest, storage: Storage = Depends(get_storage)) ->
         model=client.models[0] if client.configured else "deterministic-fallback",
         prompt_version=prompt_version(),
         degraded_count=sum(1 for c in cards if c.degraded),
+        allocation=compute_allocation(profile, gold_adjustment_pts=adj),
     )
