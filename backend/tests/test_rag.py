@@ -22,7 +22,7 @@ class TestCorpus:
     def test_all_docs_load_with_frontmatter(self):
         chunks = load_corpus()
         doc_ids = {c.doc_id for c in chunks}
-        assert len(doc_ids) == 10
+        assert len(doc_ids) == 20  # 10 gold-regime docs + 10 asset-class docs
 
     def test_chunk_ids_are_stable_citation_refs(self):
         for c in load_corpus():

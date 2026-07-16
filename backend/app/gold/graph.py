@@ -48,6 +48,21 @@ DRIVERS: dict[str, tuple[str, str, list[str]]] = {
     "gold_timing_risk": ("Near-term gold timing risk", "decision", ["allocation", "price"]),
     "inflation_hedge_value": ("Gold as inflation hedge", "decision", ["allocation", "macro"]),
     "crisis_hedge_value": ("Gold as crisis hedge", "decision", ["allocation", "crisis"]),
+    # asset-class reference nodes (household instruments). Each node emits ONLY its
+    # class tag — never the shared "instrument" tag the docs carry — so an FD query
+    # allows just FD chunks, keeping classes from leaking into each other. The docs
+    # deliberately carry no "india" tag either, so instrument answers never pull in
+    # gold-driver docs.
+    "ac_overview": ("Household asset-class map", "reference", ["overview"]),
+    "ac_cash": ("Cash and liquid holdings", "reference", ["cash"]),
+    "ac_fd": ("Fixed and recurring deposits", "reference", ["fd"]),
+    "ac_bonds": ("Bonds and debt funds", "reference", ["bonds"]),
+    "ac_smallsavings": ("Small-savings schemes (PPF/EPF/NPS)", "reference", ["smallsavings"]),
+    "ac_equity": ("Equity / shares", "reference", ["equity"]),
+    "ac_index": ("Index funds and ETFs", "reference", ["index"]),
+    "ac_commodities": ("Commodities beyond gold", "reference", ["commodities"]),
+    "ac_realestate": ("Real estate and REITs", "reference", ["realestate"]),
+    "ac_gold_class": ("Gold as an asset class", "reference", ["gold"]),
 }
 
 #: (src, dst, sign, strength, note)
@@ -101,6 +116,18 @@ EDGES: list[tuple[str, str, int, str, str]] = [
     ("risk_sentiment", "crisis_hedge_value", -1, "medium", "Hedge value rises when risk is off"),
     ("gold_timing_risk", "gold_allocation_case", -1, "medium",
      "Timing risk argues for staggered entry, not absence"),
+    # asset-class map: each class informs the overview, so a "where do I spread my
+    # money" query (seeded at ac_overview) expands to every class; class-specific
+    # queries stay narrow because these nodes have no predecessors of their own.
+    ("ac_cash", "ac_overview", +1, "medium", "Safety base of the map"),
+    ("ac_fd", "ac_overview", +1, "medium", "Fixed-return slice"),
+    ("ac_bonds", "ac_overview", +1, "medium", "Income-and-stability slice"),
+    ("ac_smallsavings", "ac_overview", +1, "medium", "Tax-efficient long-term slice"),
+    ("ac_equity", "ac_overview", +1, "strong", "Growth engine"),
+    ("ac_index", "ac_overview", +1, "strong", "Low-cost equity exposure"),
+    ("ac_commodities", "ac_overview", +1, "weak", "Specialist diversifier"),
+    ("ac_realestate", "ac_overview", +1, "medium", "Illiquid growth/consumption slice"),
+    ("ac_gold_class", "ac_overview", +1, "medium", "Hedge slice"),
 ]
 
 
@@ -134,9 +161,9 @@ _KEYWORDS: dict[str, list[str]] = {
     "season": ["festival_season", "local_demand"],
     "premium": ["domestic_premium"],
     "central bank": ["central_bank_buying"],
-    "etf": ["etf_flows"],
+    "etf": ["etf_flows", "ac_index"],
     "sgb": ["sgb_availability"],
-    "bond": ["sgb_availability"],
+    "bond": ["sgb_availability", "ac_bonds"],
     "hedge": ["inflation_hedge_value", "crisis_hedge_value"],
     "crisis": ["crisis_hedge_value", "geopolitical_risk", "risk_sentiment"],
     "war": ["geopolitical_risk"],
@@ -145,6 +172,44 @@ _KEYWORDS: dict[str, list[str]] = {
     "allocation": ["gold_allocation_case"],
     "timing": ["gold_timing_risk"],
     "now": ["gold_timing_risk"],
+    # asset-class routing (household instruments)
+    "asset class": ["ac_overview"],
+    "spread my money": ["ac_overview"],
+    "where to invest": ["ac_overview"],
+    "diversif": ["ac_overview"],
+    "portfolio": ["ac_overview"],
+    "liquid": ["ac_cash"],
+    "savings account": ["ac_cash"],
+    "fixed deposit": ["ac_fd"],
+    "fd": ["ac_fd"],
+    "recurring deposit": ["ac_fd"],
+    "debt fund": ["ac_bonds"],
+    "g-sec": ["ac_bonds"],
+    "small saving": ["ac_smallsavings"],
+    "ppf": ["ac_smallsavings"],
+    "epf": ["ac_smallsavings"],
+    "provident": ["ac_smallsavings"],
+    "nps": ["ac_smallsavings"],
+    "sukanya": ["ac_smallsavings"],
+    "equity": ["ac_equity"],
+    "share market": ["ac_equity"],
+    "shares": ["ac_equity"],
+    "stock market": ["ac_equity"],
+    "stock": ["ac_equity"],
+    "index fund": ["ac_index"],
+    "index": ["ac_index"],
+    "nifty": ["ac_index"],
+    "sensex": ["ac_index"],
+    "mutual fund": ["ac_index", "ac_equity"],
+    "sip": ["ac_index"],
+    "commodit": ["ac_commodities"],
+    "silver": ["ac_commodities"],
+    "real estate": ["ac_realestate"],
+    "property": ["ac_realestate"],
+    "reit": ["ac_realestate"],
+    "how much gold": ["ac_gold_class"],
+    "gold play": ["ac_gold_class"],
+    "role of gold": ["ac_gold_class"],
 }
 
 _DEFAULT_NODES = ["gold_usd", "gold_inr", "gold_allocation_case"]

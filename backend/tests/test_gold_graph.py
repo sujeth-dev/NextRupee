@@ -16,7 +16,8 @@ TODAY = date(2026, 7, 10)
 
 class TestGraphIntegrity:
     def test_node_count_around_30(self):
-        assert 28 <= len(DRIVERS) <= 35
+        # 30 gold-driver nodes + 10 asset-class reference nodes
+        assert 28 <= len(DRIVERS) <= 45
 
     def test_every_edge_references_declared_nodes(self):
         for src, dst, _sign, _strength, _note in EDGES:
