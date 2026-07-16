@@ -154,15 +154,54 @@ export default function AskBox() {
         <p className="mt-4 rounded-chip bg-error-bg px-4 py-3 text-[14px] text-error">{error}</p>
       )}
 
-      {result && (
-        <div className="mt-4 rounded-chip border border-border bg-surface-2 p-4">
+      {busy && (
+        <div
+          className="mt-4 flex items-center gap-2.5 rounded-chip border border-border bg-surface-2 px-4 py-3.5"
+          role="status"
+          aria-label="Thinking"
+        >
+          <span className="typing-dot" />
+          <span className="typing-dot" />
+          <span className="typing-dot" />
+          <span className="font-sans text-[13px] text-ink-3">reading the sources…</span>
+        </div>
+      )}
+
+      {result && result.refused && (
+        <div className="reveal mt-4 rounded-chip border border-indigo-100 bg-indigo-100/40 p-4">
           <div className="flex gap-3">
+            <svg
+              viewBox="0 0 24 24"
+              className="mt-0.5 h-5 w-5 shrink-0 text-indigo-600"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="9" />
+              <path d="m15.5 8.5-2 5-5 2 2-5 5-2Z" />
+            </svg>
+            <div>
+              <p className="font-display text-[16px] font-semibold leading-snug text-ink">
+                {result.headline}
+              </p>
+              <p className="mt-2 text-[14px] leading-relaxed text-ink-2">{result.detail}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {result && !result.refused && (
+        <div className="mt-4 rounded-chip border border-border bg-surface-2 p-4">
+          <div className="reveal flex gap-3">
             <span className="mt-0.5 w-1 shrink-0 self-stretch rounded-full bg-indigo-600" aria-hidden="true" />
             <p className="font-display text-[17px] font-semibold leading-snug text-ink">
               {result.headline}
             </p>
           </div>
-          <div className="mt-3 border-t border-border pt-3">
+          <div className="reveal reveal-1 mt-3 border-t border-border pt-3">
             <p className="font-mono text-[11px] font-medium uppercase tracking-widest text-ink-3">
               Detail
             </p>
@@ -170,8 +209,8 @@ export default function AskBox() {
               {result.detail}
             </p>
           </div>
-          {!result.refused && result.citations.length > 0 && (
-            <p className="mt-3 border-t border-border pt-3 font-mono text-[12px] text-ink-3">
+          {result.citations.length > 0 && (
+            <p className="reveal reveal-2 mt-3 border-t border-border pt-3 font-mono text-[12px] text-ink-3">
               sources: {result.citations.join(" · ")}
               {result.degraded && " · assembled from sources without a language model"}
             </p>

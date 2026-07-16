@@ -57,6 +57,7 @@ export default function Intake() {
       goals,
     };
     sessionStorage.setItem("nextrupee_profile", JSON.stringify(profile));
+    sessionStorage.removeItem("nextrupee_example");
     router.push("/results");
   }
 
