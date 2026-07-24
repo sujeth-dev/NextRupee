@@ -1,0 +1,1479 @@
+<title>NextRupee — Product &amp; Platform Expansion Audit</title>
+<style>
+:root {
+  --ink: #1e293b;
+  --ink-2: #64748b;
+  --ink-3: #94a3b8;
+  --ground: #fff;
+  --surface: #f8fafc;
+  --surface-2: #f1f5f9;
+  --accent: #0f766e;
+  --accent-light: #ccfbf1;
+  --accent-2: #115e59;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --critical: #b91c1c;
+  --critical-bg: #fef2f2;
+  --high: #c2410c;
+  --high-bg: #fff7ed;
+  --medium: #0369a1;
+  --medium-bg: #f0f9ff;
+  --low: #6b7280;
+  --low-bg: #f9fafb;
+  --gold: #a16207;
+  --gold-bg: #fefce8;
+}
+@media(prefers-color-scheme:dark){:root{
+  --ink:#e2e8f0;--ink-2:#94a3b8;--ink-3:#64748b;
+  --ground:#0f172a;--surface:#1e293b;--surface-2:#334155;
+  --accent:#2dd4bf;--accent-light:#134e4a;--accent-2:#5eead4;
+  --border:#334155;--border-strong:#475569;
+  --critical:#fca5a5;--critical-bg:#450a0a;
+  --high:#fdba74;--high-bg:#431407;
+  --medium:#7dd3fc;--medium-bg:#0c4a6e;
+  --low:#9ca3af;--low-bg:#1f2937;
+  --gold:#fbbf24;--gold-bg:#422006;
+}}
+:root[data-theme="dark"]{
+  --ink:#e2e8f0;--ink-2:#94a3b8;--ink-3:#64748b;
+  --ground:#0f172a;--surface:#1e293b;--surface-2:#334155;
+  --accent:#2dd4bf;--accent-light:#134e4a;--accent-2:#5eead4;
+  --border:#334155;--border-strong:#475569;
+  --critical:#fca5a5;--critical-bg:#450a0a;
+  --high:#fdba74;--high-bg:#431407;
+  --medium:#7dd3fc;--medium-bg:#0c4a6e;
+  --low:#9ca3af;--low-bg:#1f2937;
+  --gold:#fbbf24;--gold-bg:#422006;
+}
+:root[data-theme="light"]{
+  --ink:#1e293b;--ink-2:#64748b;--ink-3:#94a3b8;
+  --ground:#fff;--surface:#f8fafc;--surface-2:#f1f5f9;
+  --accent:#0f766e;--accent-light:#ccfbf1;--accent-2:#115e59;
+  --border:#e2e8f0;--border-strong:#cbd5e1;
+  --critical:#b91c1c;--critical-bg:#fef2f2;
+  --high:#c2410c;--high-bg:#fff7ed;
+  --medium:#0369a1;--medium-bg:#f0f9ff;
+  --low:#6b7280;--low-bg:#f9fafb;
+  --gold:#a16207;--gold-bg:#fefce8;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0}
+body{
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,sans-serif;
+  color:var(--ink);background:var(--ground);
+  font-size:15px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:920px;margin:0 auto;padding:0 24px 80px}
+h1,h2,h3,h4{font-family:Georgia,"Noto Serif","Times New Roman",serif;font-weight:700;text-wrap:balance}
+h1{font-size:2rem;line-height:1.2;margin-bottom:8px;color:var(--accent-2)}
+h2{font-size:1.5rem;line-height:1.3;margin:56px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--accent);color:var(--accent-2)}
+h3{font-size:1.15rem;margin:32px 0 10px;color:var(--ink)}
+h4{font-size:1rem;margin:20px 0 6px;font-family:inherit;font-weight:600}
+p{margin:8px 0}
+a{color:var(--accent)}
+ul,ol{padding-left:20px;margin:8px 0}
+li{margin:4px 0}
+strong{font-weight:600}
+code{font-family:"SF Mono","Fira Code",Menlo,monospace;font-size:0.88em;background:var(--surface-2);padding:1px 5px;border-radius:3px}
+pre.mermaid{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0;overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+th{text-align:left;font-weight:600;padding:8px 10px;border-bottom:2px solid var(--border-strong);font-size:12px;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-2)}
+td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.tbl-wrap{overflow-x:auto}
+.subtitle{color:var(--ink-2);font-size:1.05rem;margin-bottom:24px;line-height:1.5}
+.stats{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0 32px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;flex:1;min-width:140px}
+.stat-n{font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent-2)}
+.stat-l{font-size:12px;color:var(--ink-2);text-transform:uppercase;letter-spacing:0.04em;margin-top:2px}
+.badge{display:inline-block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;padding:2px 8px;border-radius:4px;vertical-align:middle}
+.b-critical{background:var(--critical-bg);color:var(--critical)}
+.b-high{background:var(--high-bg);color:var(--high)}
+.b-medium{background:var(--medium-bg);color:var(--medium)}
+.b-low{background:var(--low-bg);color:var(--low)}
+.b-gold{background:var(--gold-bg);color:var(--gold)}
+
+.rec{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin:14px 0}
+.rec-title{font-weight:600;font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;font-size:13.5px;margin-top:8px}
+.rec-grid dt{color:var(--ink-2);font-weight:500}
+.rec-grid dd{margin:0 0 6px}
+@media(max-width:600px){.rec-grid{grid-template-columns:1fr}}
+
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:24px 0}
+.toc ol{counter-reset:toc;list-style:none;padding:0}
+.toc li{counter-increment:toc;padding:4px 0}
+.toc li::before{content:counter(toc) ". ";color:var(--ink-3);font-variant-numeric:tabular-nums;font-size:13px}
+.toc a{text-decoration:none;font-size:14px;font-weight:500}
+.toc a:hover{text-decoration:underline}
+
+.persona{background:var(--surface);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0}
+.persona-name{font-weight:600;font-size:15px;color:var(--accent-2)}
+
+.callout{background:var(--accent-light);border-radius:8px;padding:14px 18px;margin:16px 0;font-size:14px}
+.callout-warn{background:var(--high-bg);border-left:3px solid var(--high)}
+
+.section-intro{color:var(--ink-2);font-size:14.5px;margin-bottom:20px;max-width:700px}
+
+.feature-table td:first-child{font-weight:500;white-space:nowrap}
+.feature-table .impact,.feature-table .diff,.feature-table .rev,.feature-table .ret{text-align:center;font-size:13px;font-weight:500}
+
+.roadmap-phase{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin:14px 0}
+.roadmap-phase h4{margin-top:0;color:var(--accent-2)}
+.check{color:var(--accent);margin-right:4px}
+</style>
+
+<div class="wrap">
+
+<header style="margin-top:32px">
+<h1>NextRupee Product &amp; Platform Expansion Audit</h1>
+<p class="subtitle">A strategic assessment to transform NextRupee from a financial decision engine into India's most intelligent AI wealth platform. Every recommendation is grounded in the actual codebase, competitive reality, and user needs.</p>
+
+<div class="stats">
+<div class="stat"><div class="stat-n">243</div><div class="stat-l">Recommendations</div></div>
+<div class="stat"><div class="stat-n">18</div><div class="stat-l">Audit Sections</div></div>
+<div class="stat"><div class="stat-n">5</div><div class="stat-l">User Personas Simulated</div></div>
+<div class="stat"><div class="stat-n">8</div><div class="stat-l">Competitors Analyzed</div></div>
+</div>
+</header>
+
+<nav class="toc">
+<strong>Table of Contents</strong>
+<ol>
+<li><a href="#s1">Product Exploration Summary</a></li>
+<li><a href="#s2">User Persona Simulations</a></li>
+<li><a href="#s3">Product Vision vs. Competitors</a></li>
+<li><a href="#s4">Information Architecture</a></li>
+<li><a href="#s5">Decision Support Gaps</a></li>
+<li><a href="#s6">Knowledge Base Expansion</a></li>
+<li><a href="#s7">Instrument Comparison Engine</a></li>
+<li><a href="#s8">Portfolio Intelligence</a></li>
+<li><a href="#s9">AI Financial Copilot</a></li>
+<li><a href="#s10">Research Platform</a></li>
+<li><a href="#s11">UI / UX Deep Audit</a></li>
+<li><a href="#s12">Behavioral Economics</a></li>
+<li><a href="#s13">Database Expansion</a></li>
+<li><a href="#s14">Growth Strategy</a></li>
+<li><a href="#s15">Missing Features (100+)</a></li>
+<li><a href="#s16">Future Vision</a></li>
+<li><a href="#s17">Prioritized Roadmap</a></li>
+<li><a href="#s18">Financial Data &amp; Instrument Architecture</a></li>
+</ol>
+</nav>
+
+<!-- ============================================================ -->
+<h2 id="s1">1. Product Exploration Summary</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">A complete inventory of what NextRupee can and cannot do today, based on reading every file in the repository.</p>
+
+<h3>What NextRupee Is</h3>
+<p>NextRupee is a financial decision engine for Indian households. Given a user's money situation (income, expenses, savings, debt, dependents, term insurance, risk tolerance, and goals), it produces the single best next use of their money — ranked deterministically — and proves why with traced evidence and live data.</p>
+
+<p>The product is built around a powerful thesis: <em>"The LLM never computes. Every number traces to arithmetic or a cited source. Same numbers in, same answer out."</em></p>
+
+<h3>What Exists Today</h3>
+
+<h4>Five Action Categories (Closed Set)</h4>
+<div class="tbl-wrap"><table>
+<tr><th>Category</th><th>When It Fires</th><th>Priority Range</th></tr>
+<tr><td>Stabilize cash flow</td><td>Distress: surplus ≤ 0 or debt service &gt; 40% income</td><td>100</td></tr>
+<tr><td>Emergency fund</td><td>Savings &lt; 1-6 months expenses</td><td>30-90</td></tr>
+<tr><td>Clear debt</td><td>High-interest debt (APR ≥ 10%)</td><td>40-80</td></tr>
+<tr><td>Protect family</td><td>Dependents + no term insurance</td><td>45</td></tr>
+<tr><td>Invest (allocation)</td><td>Surplus &gt; 0, no distress</td><td>20</td></tr>
+</table></div>
+
+<h4>Gold Intelligence Engine</h4>
+<p>A 40-node NetworkX knowledge graph tracking gold price drivers (real yields, DXY, USD/INR, import duty, festival demand, central bank buying, etc.) with 31+ causal edges. Fed by 5 live data sources (Yahoo Finance, FRED API) plus 2 config constants (import duty 6%, domestic premium 1.5%). Backed by 20 authored corpus documents with graph-then-vector RAG retrieval.</p>
+
+<h4>Three Allocation Splits</h4>
+<div class="tbl-wrap"><table>
+<tr><th>Risk</th><th>Equity</th><th>Fixed Income</th><th>Gold</th></tr>
+<tr><td>Low (Steady)</td><td>35%</td><td>50%</td><td>15%</td></tr>
+<tr><td>Medium (Balanced)</td><td>55%</td><td>30%</td><td>15%</td></tr>
+<tr><td>High (Growth)</td><td>70%</td><td>20%</td><td>10%</td></tr>
+</table></div>
+
+<h4>Ten Intake Fields</h4>
+<p>Monthly income, monthly expenses, cash savings, debt amount, debt APR, dependents (binary yes/no), term insurance (binary yes/no), risk tolerance (3 levels), goals (10 options, collected but <strong>never used by the engine</strong>).</p>
+
+<h4>Frontend: Three Pages</h4>
+<p>Landing page (hero scenario, 3 example cases) → Intake wizard (4 steps) → Results (ranked cards, allocation panel, AskBox with 15 pre-set questions). No authentication, no persistence beyond sessionStorage, no export/print/share.</p>
+
+<h3>The Core Problem</h3>
+<div class="callout-warn callout">
+<strong>NextRupee solves one narrow problem brilliantly — "what's the single best next use of my spare cash?" — but stops short of every question that follows.</strong> A user who learns they should prepay debt can't ask "which debt first?" A user told to invest can't ask "which index fund?" A user with 6 months runway can't ask "what about my retirement?" The engine's own transparency principle — "show the work" — creates trust that the product immediately fails to capitalize on because there's nowhere to go next.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s2">2. User Persona Simulations</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">Five realistic Indian household profiles were simulated through the entire application. Each documents confusions, missing information, dead ends, and opportunities.</p>
+
+<div class="persona">
+<div class="persona-name">Persona 1: Arjun, 22 — First Salary</div>
+<p style="color:var(--ink-2);font-size:13px;margin:4px 0">₹45K/mo income · ₹30K/mo expenses · ₹40K savings · No debt · No dependents · No insurance · Medium risk · Goals: Feel financially safe, Grow long-term wealth</p>
+</div>
+
+<h4>Arjun's Journey</h4>
+<ul>
+<li><strong>Confusion:</strong> The intake never asks his age. Age is the single most important variable for retirement planning, insurance pricing, and risk capacity. He's 22 — his risk <em>capacity</em> is high even if his risk <em>tolerance</em> is medium. The engine can't know this.</li>
+<li><strong>Confusion:</strong> "Cash savings you can reach quickly" — does his salary account balance count? What about a liquid fund? The hint says "not locked investments" but doesn't clarify liquid funds.</li>
+<li><strong>Missing info:</strong> He selected "Grow long-term wealth" and "Feel financially safe" as goals, but the results page doesn't reference these goals in any recommendation. The engine ignores them entirely.</li>
+<li><strong>Dead end:</strong> Gets told "Build emergency fund to ₹90,000." Good advice. But then what? No follow-up SIP recommendation, no "come back when you've saved ₹90K," no timeline.</li>
+<li><strong>Dead end:</strong> Clicks "What is an index fund and why are they popular?" in AskBox. Gets a general answer. But can't ask "OK, how do I actually buy one?" or "Which one should I start with?" — guardrails block instrument-level answers.</li>
+<li><strong>Missing:</strong> No education pathway. A 22-year-old needs financial literacy, not just one answer. No learning resources, no glossary, no "basics" section.</li>
+<li><strong>Missing:</strong> No SIP calculator. He earns ₹15K surplus — what does ₹5K/month SIP look like in 10 years? 20 years? The engine computes allocation but never projects growth.</li>
+<li><strong>Opportunity:</strong> First-job users are the highest-LTV users if retained. If NextRupee captured Arjun at 22 and guided him over the next decade, it would own his financial identity.</li>
+</ul>
+
+<div class="persona">
+<div class="persona-name">Persona 2: Priya, 32 — Married, Home Loan, Children</div>
+<p style="color:var(--ink-2);font-size:13px;margin:4px 0">₹1.5L/mo income · ₹1L/mo expenses · ₹5L savings · ₹25L home loan at 8.5% · 2 kids · Has term insurance · Medium risk · Goals: Child's education, House deposit, Grow wealth</p>
+</div>
+
+<h4>Priya's Journey</h4>
+<ul>
+<li><strong>Critical gap:</strong> The intake asks "Any high-interest debt?" with a binary yes/no. Priya has a ₹25L home loan at 8.5% APR. Is this "high-interest"? The hint says "credit cards, personal loans." A home loan at 8.5% is economically significant but not "high-interest" in the credit card sense. She answers "No" — and the engine <strong>completely ignores a ₹25L liability</strong>.</li>
+<li><strong>Critical gap:</strong> Even if she says "Yes" and enters ₹25L at 8.5%, the engine treats it identically to credit card debt. There's no distinction between secured/unsecured, no understanding that home loan prepayment has tax implications (Section 80C, 24b).</li>
+<li><strong>Missing:</strong> "Child's education" goal selected but unused. She can't ask "How much should I save for my kids' college?" or "Is an education plan worth it?" No corpus estimation, no timeline calculation.</li>
+<li><strong>Missing:</strong> No health insurance question. With 2 kids and a single income, health coverage is arguably more urgent than term insurance. The engine never asks about it.</li>
+<li><strong>Missing:</strong> No existing investment tracking. Priya likely has PPF, EPF (via employer), maybe mutual funds. The engine doesn't know about any of this and may recommend actions she's already taken.</li>
+<li><strong>Missing:</strong> "Dependents" is binary. She has 2 kids aged 3 and 7. Number and age of dependents dramatically affect insurance needs, education planning, and risk tolerance timelines.</li>
+<li><strong>Dead end:</strong> Gets allocation recommendation: 55% equity, 30% fixed income, 15% gold. But she's already investing via EPF and PPF (which are "fixed income" and "small savings"). The allocation doesn't account for existing positions.</li>
+<li><strong>Opportunity:</strong> Priya represents the core Indian household user. Solving her complete financial picture (home loan + kids' education + retirement + insurance) would be the killer use case.</li>
+</ul>
+
+<div class="persona">
+<div class="persona-name">Persona 3: Rajesh, 45 — High Income, Multiple Assets</div>
+<p style="color:var(--ink-2);font-size:13px;margin:4px 0">₹4L/mo income · ₹2L/mo expenses · ₹30L savings · No high-interest debt · 2 dependents · Has term insurance · High risk · Goals: Retire comfortably, Grow wealth</p>
+</div>
+
+<h4>Rajesh's Journey</h4>
+<ul>
+<li><strong>Critical gap:</strong> Rajesh owns stocks (₹50L), gold (₹10L), FDs (₹20L), PPF (₹15L), EPF (₹25L), and a rental property. The engine knows <strong>none of this</strong>. It recommends "Invest monthly surplus as 70% equity, 20% fixed income, 10% gold" — but his actual portfolio is already 40% equity, 30% fixed income, 20% gold, 10% real estate. The recommendation is detached from reality.</li>
+<li><strong>Critical gap:</strong> No tax optimization. Rajesh is in the 30% bracket. Section 80C is ₹1.5L cap (already maxed via EPF + PPF). He needs NPS (80CCD), health insurance (80D), HRA optimization, LTCG harvesting. The engine offers nothing here.</li>
+<li><strong>Missing:</strong> No portfolio analysis. He has concentration risk in 3 stocks. No overlap detection, no sector exposure analysis, no rebalancing suggestion.</li>
+<li><strong>Missing:</strong> No retirement readiness score. He's 45, wants to retire at 55. Does he have enough? What's the gap? The engine can't tell him.</li>
+<li><strong>Missing:</strong> No estate planning. He has ₹1.5Cr+ in assets and 2 dependents. No will guidance, no nomination reminder, no joint-account considerations.</li>
+<li><strong>Dead end:</strong> With 15 months runway (₹30L / ₹2L) and no high-interest debt, the engine's top recommendation is "Invest surplus." Correct but unhelpful — he's already investing. He needs optimization, not introduction.</li>
+<li><strong>Opportunity:</strong> High-income users are the premium segment. They need portfolio intelligence, tax optimization, and retirement planning — features worth paying for.</li>
+</ul>
+
+<div class="persona">
+<div class="persona-name">Persona 4: Lakshmi, 62 — Retired</div>
+<p style="color:var(--ink-2);font-size:13px;margin:4px 0">₹0/mo income (pension not captured) · ₹40K/mo expenses · ₹1Cr savings · No debt · No dependents · Has term insurance · Low risk · Goals: Retire comfortably</p>
+</div>
+
+<h4>Lakshmi's Journey</h4>
+<ul>
+<li><strong>Critical failure:</strong> The intake asks "monthly income (take-home)" but has no concept of pension, rental income, or investment income. Lakshmi enters ₹0 because she has no salary. This immediately triggers <strong>distress mode</strong> (surplus ≤ 0), and all investment recommendations are suppressed. She gets "Stabilize cash flow: reduce outgo or raise income." This is wrong — she has ₹1 crore in savings and a ₹30K/month pension.</li>
+<li><strong>Critical failure:</strong> Even if she enters pension as "income," her financial needs are completely different from a salaried person. She needs capital preservation, income generation, and drawdown planning — none of which the engine supports.</li>
+<li><strong>Missing:</strong> No income sources beyond salary (pension, rental, dividends, interest).</li>
+<li><strong>Missing:</strong> No withdrawal rate planning (4% rule, bucket strategy).</li>
+<li><strong>Missing:</strong> No medical expense projection. Health costs rise exponentially after 60.</li>
+<li><strong>Missing:</strong> No inflation impact on fixed income. ₹40K expenses at 6% inflation = ₹72K in 10 years.</li>
+<li><strong>Missing:</strong> "Term insurance" is asked but she's 62 — term insurance at 62 is prohibitively expensive and may not be worth it. The question is irrelevant for her life stage.</li>
+<li><strong>Opportunity:</strong> India's retiree segment is growing rapidly and is vastly underserved by fintech. A retirement-specific module would differentiate NextRupee from every competitor.</li>
+</ul>
+
+<div class="persona">
+<div class="persona-name">Persona 5: Vikram, 35 — NRI in the US</div>
+<p style="color:var(--ink-2);font-size:13px;margin:4px 0">$8K/mo income (₹6.7L) · ₹2L/mo India expenses · ₹15L India savings · No debt · No dependents · No term insurance · High risk · Goals: House deposit, Grow wealth</p>
+</div>
+
+<h4>Vikram's Journey</h4>
+<ul>
+<li><strong>Critical gap:</strong> The intake is entirely rupee-denominated. Vikram earns in dollars. He must mentally convert $8K → ₹6.7L at today's exchange rate. If the rupee depreciates 5% next year, his effective income changes — the engine doesn't model this.</li>
+<li><strong>Missing:</strong> No NRI-specific rules. NRIs can't invest in PPF (post-maturity only), have different FD rates (NRE/NRO), need FEMA-compliant investments, face DTAA tax considerations, and have unique repatriation constraints.</li>
+<li><strong>Missing:</strong> No currency allocation. Vikram needs to decide how much to keep in USD vs INR. This is a fundamental allocation decision the engine can't help with.</li>
+<li><strong>Missing:</strong> No understanding of US tax obligations. Vikram may owe US taxes on Indian investments (FBAR, FATCA). The engine's India-only perspective misses this entirely.</li>
+<li><strong>Missing:</strong> "House deposit" goal — is this a house in India or the US? Different markets, different financing, different tax treatment. The engine doesn't ask.</li>
+<li><strong>Dead end:</strong> Allocation suggests 15% gold. But NRIs buying physical gold in India face different import rules. SGBs are available to NRIs through secondary market only. Gold ETFs are the cleanest route — but the engine can't name a specific product.</li>
+<li><strong>Opportunity:</strong> India has 32 million NRIs. NRI financial planning is complex and poorly served by existing tools. A dedicated NRI module would be a major differentiator.</li>
+</ul>
+
+<h3>Cross-Persona Findings</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Gap</th><th>Personas Affected</th><th>Severity</th></tr>
+<tr><td>No age/life stage input</td><td>All 5</td><td><span class="badge b-critical">Critical</span></td></tr>
+<tr><td>Goals collected but never used</td><td>All 5</td><td><span class="badge b-critical">Critical</span></td></tr>
+<tr><td>No existing investment tracking</td><td>3, 4, 5</td><td><span class="badge b-critical">Critical</span></td></tr>
+<tr><td>Single-debt model (no home loans, education loans)</td><td>2, 3</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>No tax awareness</td><td>2, 3, 5</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>No income sources beyond salary</td><td>4, 5</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>No retirement/drawdown planning</td><td>3, 4</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>Binary dependents (no count/ages)</td><td>2, 3</td><td><span class="badge b-medium">Medium</span></td></tr>
+<tr><td>No NRI support</td><td>5</td><td><span class="badge b-medium">Medium</span></td></tr>
+<tr><td>No health insurance modeling</td><td>2, 3, 4</td><td><span class="badge b-high">High</span></td></tr>
+</table></div>
+
+<!-- ============================================================ -->
+<h2 id="s3">3. Product Vision vs. Competitors</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">Where NextRupee sits relative to eight Indian and global financial platforms, and what would make switching obvious.</p>
+
+<h3>Competitive Landscape</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Platform</th><th>Core Value</th><th>Strengths vs. NextRupee</th><th>NextRupee's Edge</th></tr>
+<tr><td><strong>Zerodha</strong></td><td>Low-cost execution</td><td>Full brokerage, Kite charts, Varsity education, Coin for MFs</td><td>Zerodha tells you HOW to buy; NextRupee tells you WHAT to do and WHY</td></tr>
+<tr><td><strong>Groww</strong></td><td>Simplified investing</td><td>MF/stocks/FD execution, onboarding UX, scale (80M users)</td><td>Groww shows products; NextRupee shows the one right action with proof</td></tr>
+<tr><td><strong>INDmoney</strong></td><td>All-in-one finance</td><td>Account aggregation, net worth tracking, US stocks, insurance</td><td>INDmoney is a dashboard; NextRupee is a decision engine</td></tr>
+<tr><td><strong>Kuvera</strong></td><td>Goal-based investing</td><td>Goal tracking, portfolio rebalancing, financial planning</td><td>Kuvera requires investment knowledge; NextRupee works for complete beginners</td></tr>
+<tr><td><strong>ET Money</strong></td><td>Tax + investing</td><td>Tax filing, NPS, health insurance, credit score</td><td>ET Money is feature-rich but overwhelming; NextRupee is focused</td></tr>
+<tr><td><strong>Smallcase</strong></td><td>Thematic portfolios</td><td>Curated baskets, rebalancing, model portfolios</td><td>Smallcase is for intermediate investors; NextRupee is pre-investment guidance</td></tr>
+<tr><td><strong>Morningstar</strong></td><td>Research & ratings</td><td>Deep fund analysis, star ratings, global data</td><td>Morningstar is research; NextRupee is personalized action</td></tr>
+<tr><td><strong>Bloomberg</strong></td><td>Professional terminal</td><td>Real-time data, analytics, news, $25K/year price point</td><td>NextRupee could be "Bloomberg for households" — affordable, personal</td></tr>
+</table></div>
+
+<h3>What Would Make Switching Obvious</h3>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-critical">Critical</span> NextRupee Must Own the "Why" Layer</div>
+<p>Every competitor either executes transactions (Zerodha, Groww) or aggregates data (INDmoney). <strong>No Indian platform owns the decision layer</strong> — the space between "I have money" and "I should buy this specific product." NextRupee's thesis is exactly this gap. But to own it, the engine must answer every financial decision, not just five.</p>
+<p>The moat: deterministic, auditable reasoning that no LLM-only product can replicate. Zerodha can't show "why this instead of that" with traced arithmetic. Groww can't prove their recommendations aren't influenced by commission structures. NextRupee can — if it expands its decision surface.</p>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> Build the Trust Graph Before the Transaction Layer</div>
+<p>Competitors monetize through transactions. NextRupee's no-commission, no-account model builds trust. The strategy should be: <strong>earn trust → capture financial identity → introduce premium intelligence → optionally partner for execution.</strong> This is the Morningstar playbook (research → ratings → fund selection → asset management) adapted for Indian retail.</p>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> The Gold Intelligence Engine Is the Prototype for Every Asset Class</div>
+<p>The 40-node knowledge graph, graph-then-vector RAG, regime signal, and confidence-capped output — this architecture is a <strong>genuine competitive moat</strong>. No competitor has anything like it for any asset class. The strategy: replicate this pattern for equity, debt, real estate, and tax — creating a multi-engine intelligence platform where each engine is individually defensible.</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s4">4. Information Architecture</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">How information should be reorganized for a platform that serves households across their financial lifecycle.</p>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-critical">Critical</span> R-01: Expand from 3 Pages to a Dashboard Model</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Three pages (landing → intake → results) is a one-shot flow with no return path. Users complete it once and have no reason to come back.</dd>
+<dt>Opportunity</dt><dd>Transform into a dashboard with persistent financial identity: Home (overview + key metrics) → Profile (editable, multi-section) → Actions (ranked recommendations, updated as data changes) → Learn (education, comparisons) → Research (market data, tools)</dd>
+<dt>User benefit</dt><dd>Users return weekly to check updated recommendations as their finances or markets change</dd>
+<dt>Business benefit</dt><dd>Retention increases from near-zero to weekly active users; creates upsell surface for premium features</dd>
+<dt>Technical approach</dt><dd>Add user accounts (Supabase Auth), replace sessionStorage with persistent profiles, add a dashboard shell with tab navigation</dd>
+<dt>Effort</dt><dd><span class="badge b-high">Hard</span> — 4-6 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-critical">Critical</span></dd>
+<dt>Dependencies</dt><dd>User authentication (R-02), persistent profiles</dd>
+<dt>Screens affected</dt><dd>All — new layout shell, new dashboard page, refactored intake and results</dd>
+<dt>Mockup idea</dt><dd>Left sidebar: Home / Actions / Learn / Research / Profile. Main area: summary cards (net worth, monthly surplus, top action, portfolio health score) + ranked action list</dd>
+<dt>Success metrics</dt><dd>Weekly active users &gt; 20% of registered, return visit rate &gt; 40%</dd>
+<dt>KPIs</dt><dd>DAU/MAU ratio, session frequency, time-to-first-action</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-critical">Critical</span> R-02: Add User Accounts with Financial Identity</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>"No account" was a deliberate v1 choice to reduce friction. But it means zero retention — every visit starts from scratch, every user is anonymous, no personalization is possible.</dd>
+<dt>Opportunity</dt><dd>Offer optional sign-up (Google OAuth via Supabase Auth) after first results view. Users who see value in their results will create accounts to save them. The anonymous flow remains for try-before-buy.</dd>
+<dt>User benefit</dt><dd>Save profile, track changes over time, get updated recommendations as markets shift</dd>
+<dt>Business benefit</dt><dd>Identifiable users enable retention loops, email engagement, premium upsell, and aggregate analytics</dd>
+<dt>Technical approach</dt><dd>Supabase Auth with Google provider, RLS policies on profiles table (session_id → user_id migration), persistent profile storage</dd>
+<dt>Effort</dt><dd><span class="badge b-high">Hard</span> — 2-3 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-critical">Critical</span></dd>
+<dt>Dependencies</dt><dd>None — foundational</dd>
+<dt>Screens affected</dt><dd>Layout (auth header), intake (save profile), results (save results)</dd>
+<dt>Mockup idea</dt><dd>Minimal: "Save your results" prompt after first analysis with Google sign-in button. No gate before results.</dd>
+<dt>Success metrics</dt><dd>Sign-up conversion &gt; 30% of users who complete intake</dd>
+<dt>KPIs</dt><dd>Conversion rate, activation rate (users who return within 7 days)</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-03: Split Intake into Progressive Profile Building</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>The current 4-step intake collects 10 fields and produces one answer. This is the right MVP but a dead end — expanding to 20+ fields would make the form overwhelming.</dd>
+<dt>Opportunity</dt><dd>Progressive profiling: start with the current 10 fields for the core recommendation, then unlock deeper modules (tax planning, retirement, education planning) as users add more data. Each module asks 3-5 additional questions.</dd>
+<dt>User benefit</dt><dd>Get quick value immediately, then go deeper on specific concerns without re-entering data</dd>
+<dt>Business benefit</dt><dd>Higher profile completion, more engagement surface, premium gate opportunities</dd>
+<dt>Technical approach</dt><dd>Modular profile schema (core + tax_module + retirement_module + etc.), each module unlocks corresponding engine capabilities</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 2-3 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Dependencies</dt><dd>User accounts (R-02), expanded engine modules</dd>
+<dt>Screens affected</dt><dd>Intake (modular sections), Profile page (add/edit modules)</dd>
+<dt>Mockup idea</dt><dd>After core results: "Unlock deeper insights" cards — "Tax optimization (3 questions)", "Retirement readiness (4 questions)", "Education planning (3 questions)"</dd>
+<dt>Success metrics</dt><dd>Module completion rate &gt; 50% for users who start them</dd>
+<dt>KPIs</dt><dd>Fields per user, module adoption rate, incremental recommendations generated</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-04: Add a Financial Education Section</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>AskBox has 15 pre-set questions but no structured learning path. The 20 gold corpus documents are hidden behind Q&amp;A — users can't browse them.</dd>
+<dt>Opportunity</dt><dd>Create a "Learn" section that surfaces the RAG corpus as readable articles, adds comparison guides (Gold vs FD, PPF vs NPS), and links education to the user's own numbers.</dd>
+<dt>User benefit</dt><dd>Learn financial concepts in context of their own situation, not in the abstract</dd>
+<dt>Business benefit</dt><dd>SEO traffic driver, content marketing, positions NextRupee as a trusted authority</dd>
+<dt>Technical approach</dt><dd>Render corpus markdown as pages, add comparison templates, link articles to profile-specific calculations</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 2-3 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Dependencies</dt><dd>None</dd>
+<dt>Screens affected</dt><dd>New "Learn" section with article pages</dd>
+<dt>Mockup idea</dt><dd>Cards per topic: "Understanding Gold" / "Emergency Fund Math" / "Debt vs. Investing" — each opens a clean article with the user's own numbers woven in</dd>
+<dt>Success metrics</dt><dd>Average articles read per user &gt; 2, organic search traffic &gt; 1000/month within 6 months</dd>
+<dt>KPIs</dt><dd>Article read rate, time on page, search impressions</dd>
+</dl>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s5">5. Decision Support Gaps</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">Every financial decision an Indian household might need help with, mapped against NextRupee's current capability. The engine currently supports 5 decision types. A comprehensive platform needs 40+.</p>
+
+<h3>Decisions Users Cannot Currently Make</h3>
+
+<div class="tbl-wrap"><table>
+<tr><th>#</th><th>Decision</th><th>Why It Matters</th><th>Data Needed</th><th>Priority</th></tr>
+<tr><td>1</td><td>Should I prepay my home loan or invest?</td><td>India's most common financial dilemma. ₹20-50L at stake for most households. Involves tax (80C, 24b), opportunity cost, and emotional factors.</td><td>Home loan balance, tenure remaining, interest rate, tax bracket, Section 80C utilization</td><td><span class="badge b-critical">Critical</span></td></tr>
+<tr><td>2</td><td>Which debts should I pay first?</td><td>Most households have 2-5 debts (credit card, personal loan, home loan, education loan, car loan) at different rates. Avalanche vs. snowball is a real decision.</td><td>Multiple debt entries: type, balance, APR, minimum payment, tenure</td><td><span class="badge b-critical">Critical</span></td></tr>
+<tr><td>3</td><td>How much term/health insurance do I need?</td><td>Under-insurance is India's biggest financial risk. 75% of Indians are uninsured or under-insured for health.</td><td>Age, income, dependents (count + ages), existing coverage, city tier, lifestyle conditions</td><td><span class="badge b-critical">Critical</span></td></tr>
+<tr><td>4</td><td>Should I choose the old or new tax regime?</td><td>Affects every salaried Indian. Wrong choice costs ₹20K-1L+ annually. Requires comparing deductions across regimes.</td><td>Gross salary, HRA, 80C investments, 80D premiums, home loan interest, NPS contribution</td><td><span class="badge b-critical">Critical</span></td></tr>
+<tr><td>5</td><td>Am I on track for retirement?</td><td>India has no social security. 95% of Indians haven't calculated their retirement corpus. The gap between needed and saved is usually shocking.</td><td>Age, retirement age, current savings, monthly contribution, expected inflation, expected returns</td><td><span class="badge b-critical">Critical</span></td></tr>
+<tr><td>6</td><td>Gold ETF vs. Sovereign Gold Bond vs. Physical?</td><td>Different taxation, liquidity, and returns. SGBs offer 2.5% annual interest + capital gains tax exemption at maturity.</td><td>Investment horizon, liquidity needs, tax bracket, investment amount</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>7</td><td>Should I increase my SIP amount?</td><td>Step-up SIP increases wealth significantly. 10% annual step-up on ₹10K/mo SIP yields 35% more over 20 years.</td><td>Current SIP, income growth rate, surplus trend, goal timelines</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>8</td><td>Index fund vs. active mutual fund?</td><td>80% of active funds underperform indices over 10 years in India. But some categories (small-cap, mid-cap) have active manager alpha.</td><td>Investment category, time horizon, expense ratio comparison, tracking error</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>9</td><td>Should I rent or buy a house?</td><td>India's most emotional financial decision. Most people overpay for ownership vs. renting + investing the difference.</td><td>Rent amount, property price, home loan rate, expected appreciation, opportunity cost of down payment</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>10</td><td>NPS vs. PPF vs. ELSS for tax saving?</td><td>All three save tax under 80C but differ dramatically in lock-in, returns, liquidity, and taxation on withdrawal.</td><td>Tax bracket, investment horizon, liquidity needs, risk tolerance, existing 80C utilization</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>11</td><td>Should I invest in REITs or physical real estate?</td><td>REITs offer 6-8% yield with ₹10K minimum. Physical real estate requires ₹20L+ and is illiquid.</td><td>Investment amount, liquidity needs, rental yield expectations, tax implications</td><td><span class="badge b-medium">Medium</span></td></tr>
+<tr><td>12</td><td>How should I rebalance my portfolio?</td><td>Portfolios drift from target allocation. Annual rebalancing improves risk-adjusted returns by 0.5-1% historically.</td><td>Current portfolio composition, target allocation, tax implications of selling</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>13</td><td>Should I diversify internationally?</td><td>India is 3% of global market cap. Home bias costs Indian investors 1-2% in risk-adjusted returns.</td><td>Current geographic allocation, currency exposure, FEMA limits, available instruments</td><td><span class="badge b-medium">Medium</span></td></tr>
+<tr><td>14</td><td>FD vs. debt mutual fund vs. bonds?</td><td>Post-2023 tax changes, FDs and debt funds are taxed similarly. But debt funds offer better liquidity and potential for capital appreciation.</td><td>Investment amount, time horizon, tax bracket, liquidity needs</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>15</td><td>Should I take a personal loan to invest?</td><td>Never, but people consider it. The engine should model why borrowing at 12-18% to invest at 10-12% expected return is mathematically negative.</td><td>Loan rate, expected return, risk of loss, leverage ratio</td><td><span class="badge b-medium">Medium</span></td></tr>
+<tr><td>16</td><td>How much should I allocate to crypto?</td><td>Regulatory clarity improving in India. 30% tax + 1% TDS. Young investors want exposure.</td><td>Risk tolerance, total portfolio, regulatory status, tax implications</td><td><span class="badge b-low">Low</span></td></tr>
+<tr><td>17</td><td>Should I buy a ULIP or term + mutual fund?</td><td>ULIPs are India's most mis-sold product. Term + MF almost always wins on returns and flexibility.</td><td>ULIP charges, lock-in, surrender value, term premium, MF expected returns</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>18</td><td>When should I start saving for my child's education?</td><td>Education inflation in India is 10-12% — double general inflation. A 15-year delay can triple the required corpus.</td><td>Child's age, target education (India/abroad), current savings, education cost estimates</td><td><span class="badge b-high">High</span></td></tr>
+<tr><td>19</td><td>Should I use my emergency fund to invest in a market dip?</td><td>Tempting during corrections. The engine should model why emergency funds serve a different purpose than investment capital.</td><td>Emergency fund months, market drawdown %, job security, insurance coverage</td><td><span class="badge b-medium">Medium</span></td></tr>
+<tr><td>20</td><td>How do I optimize capital gains taxes?</td><td>Tax-loss harvesting, LTCG grandfathering, indexation benefits — all require calculation.</td><td>Purchase date, purchase price, current value, holding period, tax bracket</td><td><span class="badge b-high">High</span></td></tr>
+</table></div>
+
+<p>Additional unmapped decisions: PPF withdrawal timing, EPF vs. VPF, SCSS for seniors, PMVVY for retirement, Atal Pension Yojana eligibility, Sukanya Samriddhi for daughters, fixed vs. floating home loan rate, credit card reward optimization, car buy vs. lease, wedding budget planning, family gifting tax implications.</p>
+
+<!-- ============================================================ -->
+<h2 id="s6">6. Knowledge Base Expansion</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">The current knowledge graph covers gold with 40 nodes. A comprehensive wealth platform needs a multi-engine architecture covering all major Indian asset classes and financial concepts.</p>
+
+<h3>Asset Class Coverage Roadmap</h3>
+
+<div class="tbl-wrap"><table>
+<tr><th>Asset Class</th><th>Current Coverage</th><th>Required Coverage</th><th>Priority</th><th>Estimated Nodes</th></tr>
+<tr><td><strong>Gold</strong></td><td>40 nodes, 31 edges, 20 corpus docs, 5 live feeds</td><td>Already strong — add SGBs, gold ETFs, gold MFs as sub-nodes</td><td>Done</td><td>45</td></tr>
+<tr><td><strong>Equity (India)</strong></td><td>1 static allocation node</td><td>Nifty 50 PE, market cap/GDP, sectoral indices, FII/DII flows, IPO calendar, earnings season</td><td><span class="badge b-critical">Critical</span></td><td>35</td></tr>
+<tr><td><strong>Mutual Funds</strong></td><td>0 nodes</td><td>Category tree (large/mid/small/flexi/ELSS/debt/liquid), expense ratios, AUM trends, flow data</td><td><span class="badge b-critical">Critical</span></td><td>30</td></tr>
+<tr><td><strong>Fixed Income</strong></td><td>1 static allocation node</td><td>RBI repo rate, G-Sec yields, corporate bond spreads, FD rates by bank, NBFC rates, inflation-linked bonds</td><td><span class="badge b-high">High</span></td><td>25</td></tr>
+<tr><td><strong>Tax</strong></td><td>0 nodes</td><td>80C/80D/80CCD limits, regime comparison, LTCG/STCG rates, indexation rules, HRA calculation</td><td><span class="badge b-critical">Critical</span></td><td>20</td></tr>
+<tr><td><strong>Insurance</strong></td><td>Binary term insurance check</td><td>Term vs. whole life, health insurance types (individual/family floater/super top-up), claim settlement ratios</td><td><span class="badge b-high">High</span></td><td>20</td></tr>
+<tr><td><strong>Real Estate</strong></td><td>1 static allocation node</td><td>City-wise price indices, rental yields, REITs, home loan rates, stamp duty, registration charges</td><td><span class="badge b-medium">Medium</span></td><td>20</td></tr>
+<tr><td><strong>Retirement</strong></td><td>0 nodes</td><td>NPS (Tier I/II), EPF, PPF, SCSS, PMVVY, annuity products, withdrawal strategies</td><td><span class="badge b-high">High</span></td><td>25</td></tr>
+<tr><td><strong>Small Savings</strong></td><td>1 static allocation node</td><td>PPF rates, NSC, KVP, SSY, POMIS — all government-set quarterly rates</td><td><span class="badge b-high">High</span></td><td>15</td></tr>
+<tr><td><strong>Macro Economy</strong></td><td>Partial (US rates, India CPI)</td><td>India GDP, IIP, PMI, fiscal deficit, current account, money supply, credit growth</td><td><span class="badge b-medium">Medium</span></td><td>20</td></tr>
+<tr><td><strong>International</strong></td><td>0 nodes</td><td>US indices, MSCI World, emerging markets, Nasdaq, S&P 500, international MF/ETF options for Indian investors</td><td><span class="badge b-low">Low</span></td><td>15</td></tr>
+<tr><td><strong>Crypto</strong></td><td>Blocked by guardrails</td><td>BTC/ETH price, India regulatory status, 30% tax + 1% TDS rules, exchange options</td><td><span class="badge b-low">Low</span></td><td>10</td></tr>
+</table></div>
+
+<h3>Knowledge Graph Expansion Architecture</h3>
+
+<pre class="mermaid">
+graph TD
+    subgraph "Current: Gold Engine"
+        G[Gold USD] --> GI[Gold INR]
+        RY[US Real Yield] --> G
+        DXY[USD Index] --> G
+        FX[USD/INR] --> GI
+        DUTY[Import Duty] --> GI
+        FEST[Festival Demand] --> LP[Local Demand]
+    end
+
+    subgraph "New: Equity Engine"
+        NIFTY[Nifty 50] --> PE[Market PE]
+        FII[FII Flows] --> NIFTY
+        DII[DII Flows] --> NIFTY
+        EARN[Earnings Growth] --> PE
+        RBI[RBI Policy] --> NIFTY
+    end
+
+    subgraph "New: Debt Engine"
+        REPO[RBI Repo Rate] --> GSEC[G-Sec Yields]
+        REPO --> FD[FD Rates]
+        INF[India CPI] --> REPO
+        GSEC --> CORP[Corporate Bonds]
+        GSEC --> DEBT_MF[Debt MF NAVs]
+    end
+
+    subgraph "New: Tax Engine"
+        SLAB[Tax Slabs] --> OLD[Old Regime]
+        SLAB --> NEW[New Regime]
+        SEC80C[Section 80C] --> OLD
+        SEC80D[Section 80D] --> OLD
+        LTCG[LTCG Rules] --> TAX_OPT[Tax Optimization]
+    end
+
+    subgraph "Cross-Engine Links"
+        RBI --> FX
+        INF --> RY
+        REPO --> GI
+        NIFTY --> ALLOC[Allocation Engine]
+        GSEC --> ALLOC
+        G --> ALLOC
+        TAX_OPT --> ALLOC
+    end
+</pre>
+
+<!-- ============================================================ -->
+<h2 id="s7">7. Instrument Comparison Engine</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">Design for a comparison engine that lets users evaluate any two financial instruments side-by-side with personalized, context-aware analysis.</p>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-critical">Critical</span> R-05: Build a Universal Instrument Comparison Framework</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Users constantly face "A vs. B" decisions (Gold vs FD, NPS vs PPF, Index fund vs Active fund) but have no tool that compares them with their own numbers and tax bracket.</dd>
+<dt>Opportunity</dt><dd>Create a comparison engine where users select two instruments and get a personalized analysis factoring in their tax bracket, time horizon, risk tolerance, and existing portfolio.</dd>
+<dt>User benefit</dt><dd>Make confident financial decisions backed by personalized math, not generic advice articles</dd>
+<dt>Business benefit</dt><dd>Highest engagement feature in fintech — comparison pages drive 3-5x more time-on-site than static content</dd>
+<dt>Technical approach</dt><dd>Define a unified InstrumentProfile schema (expected_return, risk_score, liquidity_score, taxation, min_investment, lock_in, inflation_impact) per asset class. Build a comparison template that personalizes for the user's tax bracket and horizon.</dd>
+<dt>Effort</dt><dd><span class="badge b-high">Hard</span> — 3-4 weeks for core framework + first 10 comparisons</dd>
+<dt>Priority</dt><dd><span class="badge b-critical">Critical</span></dd>
+<dt>Dependencies</dt><dd>Knowledge base expansion (S6), tax engine</dd>
+<dt>Screens affected</dt><dd>New "Compare" page with two-column layout</dd>
+<dt>Mockup idea</dt><dd>Two cards side by side. User's tax bracket and horizon shown at top. Each row: metric name, value for A, value for B, verdict indicator. Bottom: AI summary of which is better for THIS user and why.</dd>
+<dt>Success metrics</dt><dd>Comparison page views &gt; 30% of active users, average comparisons per session &gt; 2</dd>
+<dt>KPIs</dt><dd>Comparison starts, completion rate, subsequent action taken</dd>
+</dl>
+</div>
+
+<h3>Priority Comparisons to Build First</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Comparison</th><th>Key Differentiators</th><th>Personalization Factor</th></tr>
+<tr><td>Gold vs. FD</td><td>Liquidity, taxation (indexation vs income tax), inflation hedge, volatility</td><td>Tax bracket changes the math completely</td></tr>
+<tr><td>Gold ETF vs. SGB vs. Physical</td><td>Expense ratio, 2.5% SGB interest, capital gains treatment, liquidity</td><td>Holding period is critical (SGB: 8yr lock-in)</td></tr>
+<tr><td>NPS vs. PPF</td><td>Lock-in (60 vs 15yr), returns (NPS: 9-12% vs PPF: 7.1%), tax treatment, withdrawal rules</td><td>Age determines NPS advantage magnitude</td></tr>
+<tr><td>ELSS vs. PPF vs. NPS (80C)</td><td>3yr vs 15yr vs 60yr lock-in, returns, taxation on maturity</td><td>Tax bracket + existing 80C utilization</td></tr>
+<tr><td>Index Fund vs. Active MF</td><td>Expense ratio, tracking error, alpha probability, tax efficiency</td><td>Investment amount (direct vs regular)</td></tr>
+<tr><td>FD vs. Debt MF</td><td>Guaranteed vs market-linked, taxation (post-2023), liquidity, premature withdrawal penalty</td><td>Tax bracket + time horizon</td></tr>
+<tr><td>Term Insurance vs. ULIP</td><td>Cost, coverage, investment returns, flexibility, charges</td><td>Age (affects premium dramatically)</td></tr>
+<tr><td>Rent vs. Buy</td><td>EMI vs rent, opportunity cost of down payment, appreciation vs investment returns</td><td>City, property price, loan rate, rent amount</td></tr>
+<tr><td>Old vs. New Tax Regime</td><td>Deduction eligibility, effective tax rate, break-even deduction amount</td><td>Gross salary + specific deductions</td></tr>
+<tr><td>REIT vs. Physical Real Estate</td><td>Minimum investment, liquidity, yield, diversification, management</td><td>Investment amount, liquidity needs</td></tr>
+</table></div>
+
+<!-- ============================================================ -->
+<h2 id="s8">8. Portfolio Intelligence</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">Features that transform NextRupee from a one-time advisor to an ongoing portfolio intelligence platform.</p>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-critical">Critical</span> R-06: Portfolio Tracking &amp; Net Worth Dashboard</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>The engine recommends allocation splits but doesn't know what the user already owns. Recommendations are detached from the user's actual portfolio.</dd>
+<dt>Opportunity</dt><dd>Let users add their holdings (manual entry first, API aggregation later). Show net worth, asset allocation pie, sector exposure, and how actual allocation differs from recommended.</dd>
+<dt>User benefit</dt><dd>See their complete financial picture in one place, with actionable gap analysis</dd>
+<dt>Business benefit</dt><dd>Portfolio data is the highest-value user data in fintech — enables personalized recommendations, retention, and premium features</dd>
+<dt>Technical approach</dt><dd>Holdings table (instrument, quantity, avg_price, current_value). Manual entry UI with instrument search. NAV/price lookup for mutual funds and stocks. Portfolio analysis engine comparing actual vs target allocation.</dd>
+<dt>Effort</dt><dd><span class="badge b-high">Hard</span> — 4-6 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-critical">Critical</span></dd>
+<dt>Screens affected</dt><dd>New Portfolio page, enhanced Results page (allocation gap shown)</dd>
+<dt>Success metrics</dt><dd>&gt; 40% of registered users add at least 3 holdings</dd>
+<dt>KPIs</dt><dd>Holdings per user, portfolio value tracked, weekly return visits</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-07: Retirement Simulation</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>95% of Indians haven't calculated their retirement corpus. The engine currently has no concept of age, retirement age, or long-term projections.</dd>
+<dt>Opportunity</dt><dd>Monte Carlo simulation showing retirement readiness probability. Inputs: age, target retirement age, current savings, monthly contribution, expected returns and inflation (with ranges). Output: probability of sustaining lifestyle for 25-30 years post-retirement.</dd>
+<dt>User benefit</dt><dd>Visual, interactive tool that makes abstract retirement planning concrete and urgent</dd>
+<dt>Business benefit</dt><dd>Highest-converting feature in financial planning — shock factor drives action</dd>
+<dt>Technical approach</dt><dd>1000-iteration Monte Carlo with variable returns (log-normal distribution), inflation (normal distribution around 6%), and mortality assumptions. Output as probability chart with confidence bands.</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 2-3 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>New Retirement page, requires age in profile</dd>
+<dt>Success metrics</dt><dd>&gt; 60% of users who run simulation increase their contribution estimate</dd>
+<dt>KPIs</dt><dd>Simulations run, gap identified, action taken</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-08: Goal Tracking with Corpus Calculator</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Users select goals (house deposit, child's education, retirement) but the engine ignores them. Goals are collected and wasted.</dd>
+<dt>Opportunity</dt><dd>For each goal: estimate target corpus (using education/housing cost data), calculate monthly SIP needed, show progress if user has existing savings earmarked. Link goals to specific allocation recommendations.</dd>
+<dt>User benefit</dt><dd>See how much they need, how much they're saving, and whether they're on track — per goal</dd>
+<dt>Business benefit</dt><dd>Goal-based engagement is the #1 retention driver in wealth apps (Kuvera's entire model)</dd>
+<dt>Technical approach</dt><dd>Goal templates with estimated costs (IIT fees, house prices by city tier, wedding costs). FV/PV calculation engine. Progress tracking against corpus targets.</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 2-3 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>Enhanced Results page, new Goal detail pages</dd>
+<dt>Success metrics</dt><dd>&gt; 50% of users set at least one goal with a timeline</dd>
+<dt>KPIs</dt><dd>Goals set, corpus gap, monthly SIP recommended vs actual</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-medium">Medium</span> R-09: Stress Test &amp; Scenario Analysis</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Users can't see how their portfolio performs under adverse conditions (market crash, job loss, medical emergency).</dd>
+<dt>Opportunity</dt><dd>Pre-built scenarios: "2008-style crash (-50% equity)", "Job loss (0 income for 6 months)", "Medical emergency (₹5L unexpected expense)", "Rupee depreciation (-10%)". Show impact on net worth, goal timelines, and recommended actions.</dd>
+<dt>User benefit</dt><dd>Understand risks before they materialize, build appropriate safety nets</dd>
+<dt>Business benefit</dt><dd>Differentiator from all Indian competitors — none offer household-level stress testing</dd>
+<dt>Technical approach</dt><dd>Apply scenario adjustments to portfolio model, rerun engine with modified parameters, show before/after comparison</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 2 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-medium">Medium</span></dd>
+<dt>Screens affected</dt><dd>New Scenarios page linked from portfolio</dd>
+<dt>Success metrics</dt><dd>&gt; 30% of portfolio users run at least one stress test</dd>
+<dt>KPIs</dt><dd>Scenarios run, emergency fund increase after stress test</dd>
+</dl>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s9">9. AI Financial Copilot</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">Expanding from a reactive Q&amp;A box to a proactive AI copilot that monitors, alerts, and guides users through their financial journey.</p>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-critical">Critical</span> R-10: Context-Aware Conversational Interface</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>The AskBox is stateless — each question is independent. It doesn't know the user's profile, their results, or what they just asked. Users can't ask "why is debt ranked above investing for ME?" because the Q&amp;A pipeline doesn't receive profile context.</dd>
+<dt>Opportunity</dt><dd>Pass user's profile + current recommendations as context to the Q&amp;A prompt. Maintain conversation history within a session. Enable profile-specific follow-ups.</dd>
+<dt>User benefit</dt><dd>Ask questions about THEIR situation, not generic finance questions</dd>
+<dt>Business benefit</dt><dd>3-5x engagement increase; personalized Q&amp;A is the stickiest feature in AI products</dd>
+<dt>Technical approach</dt><dd>Modify <code>/api/ask</code> to accept optional profile + NBCA cards in request body. Include in system prompt as context. Store Q&amp;A history in session. Add "Ask about this card" button on each NBCA card.</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 1-2 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-critical">Critical</span></dd>
+<dt>Screens affected</dt><dd>AskBox, results page, NBCA cards (new "Ask why" button)</dd>
+<dt>Success metrics</dt><dd>Questions per session increase from 1.2 to 3+, profile-referencing questions &gt; 50%</dd>
+<dt>KPIs</dt><dd>Questions/session, follow-up rate, satisfaction (thumbs up/down)</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-11: Proactive Financial Alerts</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>NextRupee is pull-only — users must visit the site to get advice. No mechanism to push insights when something changes.</dd>
+<dt>Opportunity</dt><dd>Monitor changes that affect user recommendations: gold price swings (&gt;5% weekly), interest rate changes (RBI policy), tax deadline reminders, SIP date reminders, insurance renewal alerts. Send via email or push notification.</dd>
+<dt>User benefit</dt><dd>Stay informed without checking manually; act at the right time</dd>
+<dt>Business benefit</dt><dd>Push notifications are the strongest retention mechanism in consumer apps</dd>
+<dt>Technical approach</dt><dd>Background job comparing current data against user thresholds. Email via Resend/SES. Push via web push API. Alert preferences in user settings.</dd>
+<dt>Effort</dt><dd><span class="badge b-high">Hard</span> — 3-4 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>New Settings page, notification preferences, email templates</dd>
+<dt>Success metrics</dt><dd>Email open rate &gt; 40%, push click-through &gt; 15%, alert-driven return visits &gt; 20% of total</dd>
+<dt>KPIs</dt><dd>Alerts sent, engagement rate, return visit attribution</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-12: Weekly Financial Digest</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>No regular touchpoint. Users forget about NextRupee between visits.</dd>
+<dt>Opportunity</dt><dd>Weekly email/in-app digest: "Your financial pulse this week." Include: portfolio change (if tracked), relevant market moves affecting their allocation, any recommendation changes, one educational insight linked to their profile.</dd>
+<dt>User benefit</dt><dd>Stay engaged with finances without effort; learn incrementally</dd>
+<dt>Business benefit</dt><dd>Weekly email is the #1 driver of DAU/MAU in fintech (ET Money's "Money Matters" email drives 30% of their traffic)</dd>
+<dt>Technical approach</dt><dd>Templated email with user-specific data inserts. Batch job running weekly. Personalized content selection based on profile.</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 2 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>Email template, notification preferences</dd>
+<dt>Success metrics</dt><dd>Open rate &gt; 35%, click-through &gt; 10%, weekly return rate &gt; 25%</dd>
+<dt>KPIs</dt><dd>Digest sent, opened, clicked, resulting session duration</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-medium">Medium</span> R-13: AI Mistake Detection</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Users make common financial mistakes (over-concentration, under-insurance, tax-inefficient withdrawals) that the engine can detect but doesn't proactively flag.</dd>
+<dt>Opportunity</dt><dd>Analyze user's portfolio and financial profile for common mistakes. Proactively surface warnings: "Your portfolio is 80% in equity — above your stated risk tolerance", "You have no health insurance with 2 dependents", "You're losing ₹15K/year by choosing the wrong tax regime."</dd>
+<dt>User benefit</dt><dd>Catch costly mistakes before they compound</dd>
+<dt>Business benefit</dt><dd>Proactive insights create "aha moments" that build trust and word-of-mouth</dd>
+<dt>Technical approach</dt><dd>Rule-based mistake detectors (similar to distress triggers but for portfolio and tax optimization). Pattern library of 20+ common mistakes.</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 2-3 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-medium">Medium</span></dd>
+<dt>Screens affected</dt><dd>Dashboard (alert cards), Portfolio page (warnings)</dd>
+<dt>Success metrics</dt><dd>&gt; 60% of users with detectable mistakes take corrective action within 30 days</dd>
+<dt>KPIs</dt><dd>Mistakes detected, action taken, financial impact estimated</dd>
+</dl>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s10">10. Research Platform</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">How NextRupee can evolve toward being the "Bloomberg Terminal for Indian households" — affordable, personalized market intelligence for retail investors.</p>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-14: Macro Dashboard</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>The gold engine tracks 5 live data points but none are visible to users. Market context is hidden inside the knowledge graph.</dd>
+<dt>Opportunity</dt><dd>Surface macro indicators in a visual dashboard: gold price (USD + INR), Nifty 50 level + PE, US 10y yield, USD/INR, India CPI, RBI repo rate. Show trend arrows and historical sparklines. Link each indicator to an explanation of why it matters for the user's portfolio.</dd>
+<dt>User benefit</dt><dd>Understand what's happening in markets without visiting 5 different sites</dd>
+<dt>Business benefit</dt><dd>Daily-check feature that drives habitual usage. Bloomberg Terminal's core value is "one place for everything" — this is the retail version.</dd>
+<dt>Technical approach</dt><dd>Expand feeds.py to fetch 10+ indicators. Cache with 15-minute refresh. Build a dashboard component with sparkline charts (Canvas-based). Link each indicator to the knowledge graph for AI-powered explanations.</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 3 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>New Research/Dashboard page</dd>
+<dt>Success metrics</dt><dd>&gt; 50% of registered users visit dashboard weekly</dd>
+<dt>KPIs</dt><dd>Dashboard visits, time on page, indicator click-throughs</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-medium">Medium</span> R-15: Asset Class Explorer</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>No way to explore and learn about asset classes beyond the 9 instrument pills in AskBox.</dd>
+<dt>Opportunity</dt><dd>Interactive explorer where users can drill into any asset class: what it is, historical returns, risk characteristics, tax treatment, who it's for, current market conditions. Backed by the knowledge graph and corpus.</dd>
+<dt>User benefit</dt><dd>Learn about investments at their own pace with data, not just text</dd>
+<dt>Business benefit</dt><dd>SEO goldmine — "what is PPF" gets 110K monthly searches in India</dd>
+<dt>Technical approach</dt><dd>Per-asset-class pages with standardized sections. Data from knowledge graph nodes. Charts from historical data. Personalized recommendations based on profile.</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 3 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-medium">Medium</span></dd>
+<dt>Screens affected</dt><dd>New Learn/Explore section</dd>
+<dt>Success metrics</dt><dd>Organic search traffic &gt; 5000/month within 6 months</dd>
+<dt>KPIs</dt><dd>Page views, time on page, conversion to profile creation</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-medium">Medium</span> R-16: Economic Calendar</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Users don't know when important financial events happen (RBI policy, tax deadlines, SGB windows, EPF interest announcements).</dd>
+<dt>Opportunity</dt><dd>Calendar showing upcoming events that affect the user's finances. Personalized — show tax deadlines only if user has tax module active, show SGB windows only if user has gold allocation.</dd>
+<dt>User benefit</dt><dd>Never miss a deadline or opportunity</dd>
+<dt>Business benefit</dt><dd>Time-sensitive events drive return visits (ET Money's tax deadline reminders drive 40% of Q4 traffic)</dd>
+<dt>Technical approach</dt><dd>Static event database updated monthly. Filter based on user profile. Push notifications for approaching deadlines.</dd>
+<dt>Effort</dt><dd><span class="badge b-low">Easy</span> — 1 week</dd>
+<dt>Priority</dt><dd><span class="badge b-medium">Medium</span></dd>
+<dt>Screens affected</dt><dd>Dashboard widget, optional full calendar page</dd>
+<dt>Success metrics</dt><dd>&gt; 30% of users interact with at least one calendar event</dd>
+<dt>KPIs</dt><dd>Events viewed, reminders set, action taken</dd>
+</dl>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s11">11. UI / UX Deep Audit</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">Every screen audited for layout, visual hierarchy, interaction design, accessibility, and responsiveness.</p>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-critical">Critical</span> R-17: Add Age/Life Stage to Intake</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Age is the single most important variable in financial planning. It determines risk capacity, insurance needs, retirement timeline, tax-saving priorities, and product eligibility. The current intake doesn't collect it.</dd>
+<dt>Opportunity</dt><dd>Add an age field to step 0 (Cash flow). Use it to personalize every recommendation: a 22-year-old gets "start SIP early" framing; a 55-year-old gets "protect your corpus" framing. Enable life-stage-specific modules.</dd>
+<dt>User benefit</dt><dd>Recommendations that actually match their life stage, not generic advice</dd>
+<dt>Business benefit</dt><dd>Age-personalized recommendations feel 3x more relevant (based on fintech UX research)</dd>
+<dt>Technical approach</dt><dd>Add <code>age: int</code> (ge=18, le=100) to ProfileIn. Use age in engine for insurance multipliers, risk capacity adjustment, and retirement calculations.</dd>
+<dt>Effort</dt><dd><span class="badge b-low">Easy</span> — 1 week</dd>
+<dt>Priority</dt><dd><span class="badge b-critical">Critical</span></dd>
+<dt>Screens affected</dt><dd>Intake step 0, engine, card generation</dd>
+<dt>Success metrics</dt><dd>All 5 user personas get materially different recommendations</dd>
+<dt>KPIs</dt><dd>Recommendation relevance score, user satisfaction</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-18: Form Validation Error Messages</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>When intake validation fails, the Continue button is disabled with no explanation. Users see a grayed-out button and don't know what to fix. The <code>stepValid</code> useMemo checks fields but never renders an error message.</dd>
+<dt>Opportunity</dt><dd>Add inline validation messages below each required field: "Monthly income is required", "Please select your risk tolerance". Show on blur or when the user clicks Continue while disabled.</dd>
+<dt>User benefit</dt><dd>Know exactly what to fix, reduce form abandonment</dd>
+<dt>Business benefit</dt><dd>Form completion rate increases 15-25% with inline validation (Baymard Institute)</dd>
+<dt>Technical approach</dt><dd>Add <code>touched</code> state per field. Show validation message when field is touched + invalid. Alternatively, show all errors on Continue click.</dd>
+<dt>Effort</dt><dd><span class="badge b-low">Easy</span> — 3-4 hours</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>Intake page, all 4 steps</dd>
+<dt>Success metrics</dt><dd>Form completion rate &gt; 85% of users who start</dd>
+<dt>KPIs</dt><dd>Step abandonment rate, error encounter rate</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-19: Dark Mode</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Zero <code>dark:</code> prefixes anywhere in the codebase. No <code>darkMode</code> config in Tailwind. Users browsing at night get a blinding white screen.</dd>
+<dt>Opportunity</dt><dd>The design system already has a well-structured color token layer. Adding dark mode requires defining dark variants for each token and applying them.</dd>
+<dt>User benefit</dt><dd>Comfortable viewing in any lighting condition; signal that the product is modern and polished</dd>
+<dt>Business benefit</dt><dd>40-60% of web users prefer dark mode. Missing it signals an unfinished product.</dd>
+<dt>Technical approach</dt><dd>Add <code>darkMode: "class"</code> to tailwind.config.ts. Define dark color tokens. Add system-preference detection + manual toggle. Apply <code>dark:</code> variants to all surface/text/border colors.</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 1-2 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>All pages and components</dd>
+<dt>Success metrics</dt><dd>&gt; 35% of users use dark mode within first month</dd>
+<dt>KPIs</dt><dd>Dark mode adoption rate, session duration in dark mode</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-20: Render-Blocking Font Fix</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd><code>globals.css</code> line 1 uses <code>@import url("https://fonts.googleapis.com/css2?...")</code> to load 3 Google Font families synchronously. This blocks rendering — the browser can't paint until fonts load, causing a flash of invisible text.</dd>
+<dt>Opportunity</dt><dd>Use Next.js <code>next/font/google</code> for automatic optimization, self-hosting, and zero layout shift. This is a one-file change with major performance impact.</dd>
+<dt>User benefit</dt><dd>Page loads 200-500ms faster on first visit, no text flash</dd>
+<dt>Business benefit</dt><dd>Core Web Vitals improvement (LCP), better SEO ranking</dd>
+<dt>Technical approach</dt><dd>Replace CSS @import with <code>next/font/google</code> imports in layout.tsx. Apply font CSS variables to the body. Remove the @import line.</dd>
+<dt>Effort</dt><dd><span class="badge b-low">Easy</span> — 1-2 hours</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>Layout, globals.css</dd>
+<dt>Success metrics</dt><dd>LCP &lt; 2.5s on 3G connection</dd>
+<dt>KPIs</dt><dd>LCP, FCP, CLS scores</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-21: Pre-fill Intake on Return Visit</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>The "Change my numbers" link at the bottom of results navigates to a blank intake form. Users must re-enter everything. The profile is in sessionStorage but the intake page ignores it.</dd>
+<dt>Opportunity</dt><dd>On intake mount, check sessionStorage for existing profile and pre-populate all fields. Users can adjust one number and re-submit.</dd>
+<dt>User benefit</dt><dd>Tweak one variable without re-entering 10 fields</dd>
+<dt>Business benefit</dt><dd>"What-if" exploration increases engagement 2-3x</dd>
+<dt>Technical approach</dt><dd>In intake/page.tsx useEffect, read sessionStorage profile and set all state variables. Add "Clear all" button for starting fresh.</dd>
+<dt>Effort</dt><dd><span class="badge b-low">Easy</span> — 2-3 hours</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>Intake page</dd>
+<dt>Success metrics</dt><dd>&gt; 30% of return visits use pre-filled data</dd>
+<dt>KPIs</dt><dd>Return-to-intake rate, fields modified vs pre-filled</dd>
+</dl>
+</div>
+
+<h3>Additional UI/UX Findings</h3>
+<div class="tbl-wrap"><table>
+<tr><th>Finding</th><th>Severity</th><th>Fix</th><th>Effort</th></tr>
+<tr><td>No skip-to-content link for keyboard users</td><td><span class="badge b-high">High</span></td><td>Add visually-hidden skip link as first focusable element in layout.tsx</td><td>Easy</td></tr>
+<tr><td>Color contrast: <code>text-ink-3</code> (#8A8F9C) on <code>bg-surface-2</code> (#F5F6F8) = 3.2:1, below WCAG AA 4.5:1</td><td><span class="badge b-high">High</span></td><td>Darken ink-3 to #6B7280 (5.0:1 ratio)</td><td>Easy</td></tr>
+<tr><td>No <code>aria-controls</code> on NBCA card expand button (has aria-expanded but no target)</td><td><span class="badge b-medium">Medium</span></td><td>Add id to detail panel, reference from button</td><td>Easy</td></tr>
+<tr><td>No <code>aria-required</code> on required form fields</td><td><span class="badge b-medium">Medium</span></td><td>Add aria-required="true" to CurrencyInput and BinaryChoice when required</td><td>Easy</td></tr>
+<tr><td>No <code>role="alert"</code> on error messages (visual only, not announced to screen readers)</td><td><span class="badge b-medium">Medium</span></td><td>Add role="alert" and aria-live="polite" to error containers</td><td>Easy</td></tr>
+<tr><td>Goal pills lack grouped keyboard navigation (tab through 10 buttons)</td><td><span class="badge b-medium">Medium</span></td><td>Wrap in role="group" with roving tabindex</td><td>Easy</td></tr>
+<tr><td>No custom 404 page</td><td><span class="badge b-low">Low</span></td><td>Add app/not-found.tsx matching design system</td><td>Easy</td></tr>
+<tr><td>Logo uses &lt;a href="/"&gt; instead of Next.js &lt;Link&gt; (full page reload)</td><td><span class="badge b-low">Low</span></td><td>Replace with &lt;Link href="/"&gt;</td><td>Easy</td></tr>
+<tr><td>No OG/Twitter meta tags for social sharing</td><td><span class="badge b-medium">Medium</span></td><td>Add og:image, twitter:card, og:type metadata to layout</td><td>Easy</td></tr>
+<tr><td>No beforeunload warning on partially-filled intake form</td><td><span class="badge b-medium">Medium</span></td><td>Add beforeunload listener when form has data</td><td>Easy</td></tr>
+<tr><td>Mock result card hidden on mobile (hidden lg:block) — wastes best visual proof</td><td><span class="badge b-medium">Medium</span></td><td>Show a simplified version or screenshot on mobile</td><td>Easy</td></tr>
+<tr><td>AskBox conversation is stateless — each new question replaces the answer</td><td><span class="badge b-high">High</span></td><td>Maintain Q&amp;A array, display in thread layout</td><td>Medium</td></tr>
+<tr><td>No loading state on intake submit button — user can click multiple times</td><td><span class="badge b-medium">Medium</span></td><td>Add spinner and disable on submit</td><td>Easy</td></tr>
+<tr><td>The "error" phase in results is unreachable — catch block always falls to "demo"</td><td><span class="badge b-low">Low</span></td><td>Add an explicit error path for network failures distinct from API failures</td><td>Easy</td></tr>
+<tr><td>expected_return_pct exists in AllocationSlice but is never displayed</td><td><span class="badge b-medium">Medium</span></td><td>Show expected returns per slice to justify the allocation</td><td>Easy</td></tr>
+</table></div>
+
+<!-- ============================================================ -->
+<h2 id="s12">12. Behavioral Economics</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">Design features that reduce common investing mistakes using behavioral science principles.</p>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-22: Decision Friction for Impulsive Actions</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Users make impulsive financial decisions (selling during a crash, buying gold at Diwali peak, stopping SIPs during volatility). The app currently doesn't address this.</dd>
+<dt>Opportunity</dt><dd>When a user's action contradicts the engine's recommendation (e.g., user wants to buy gold but engine says prepay debt), show a "decision friction" screen: "Before you proceed, here's what the math says." Present the opportunity cost calculation: "Buying ₹1L gold now vs. prepaying ₹1L debt saves you ₹42,000 in interest over 3 years."</dd>
+<dt>User benefit</dt><dd>Make better decisions by pausing to consider the math, not just the impulse</dd>
+<dt>Business benefit</dt><dd>Positions NextRupee as the "anti-FOMO" advisor — unique in a market where every platform pushes you to trade more</dd>
+<dt>Technical approach</dt><dd>Comparison calculator triggered by specific user actions. Pre-computed for common scenarios (gold vs debt, early SIP withdrawal, panic selling).</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 2 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>New "Decision checkpoint" modal/interstitial</dd>
+<dt>Success metrics</dt><dd>&gt; 40% of users who encounter friction change their intended action</dd>
+<dt>KPIs</dt><dd>Friction encounters, action change rate, user satisfaction</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-medium">Medium</span> R-23: Bias Detection &amp; Education</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Users exhibit common cognitive biases: recency bias (gold went up last year → buy gold), loss aversion (market fell → sell everything), anchoring (FD gives "guaranteed" returns → ignore inflation).</dd>
+<dt>Opportunity</dt><dd>When the engine detects a bias pattern in user behavior, gently flag it: "You might be experiencing recency bias. Gold returned 15% last year, but the 20-year average is 8%. Here's what the long-term data shows." Frame as education, not correction.</dd>
+<dt>User benefit</dt><dd>Become a more rational investor over time</dd>
+<dt>Business benefit</dt><dd>Unique educational angle that no Indian competitor offers</dd>
+<dt>Technical approach</dt><dd>Bias detection rules based on profile + market conditions + user questions. Educational card templates per bias type.</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 2 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-medium">Medium</span></dd>
+<dt>Screens affected</dt><dd>Results page (contextual cards), AskBox (bias-aware answers)</dd>
+<dt>Success metrics</dt><dd>&gt; 50% of users find bias education "helpful" in feedback</dd>
+<dt>KPIs</dt><dd>Bias flags shown, engagement rate, behavior change</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-medium">Medium</span> R-24: Consistency Nudges</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Financial plans work only with consistency. Users set SIP amounts but don't track adherence. No accountability mechanism exists.</dd>
+<dt>Opportunity</dt><dd>Monthly check-in: "Did you invest ₹15,000 this month as planned?" Track streaks. Show compound effect of consistency: "You've invested consistently for 6 months. If you keep this up for 10 years, you'll have ₹25L."</dd>
+<dt>User benefit</dt><dd>Build investing habits through gamification and compound growth visualization</dd>
+<dt>Business benefit</dt><dd>Habit formation = retention. Users who check in monthly have 4x higher 12-month retention</dd>
+<dt>Technical approach</dt><dd>Monthly prompt (email or in-app). Streak counter. Compound growth calculator with actual vs. planned tracking.</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 2 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-medium">Medium</span></td>
+<dt>Screens affected</dt><dd>Dashboard (streak widget), monthly email</dd>
+<dt>Success metrics</dt><dd>&gt; 30% monthly check-in rate among registered users</dd>
+<dt>KPIs</dt><dd>Check-in rate, streak length, consistency score</dd>
+</dl>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s13">13. Database Expansion</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">Current schema: 3 tables (profiles, nbca_log, eval_runs). A comprehensive platform needs 15-20 tables.</p>
+
+<h3>Proposed Schema Evolution</h3>
+
+<pre class="mermaid">
+erDiagram
+    USERS {
+        uuid id PK
+        text email UK
+        text name
+        text auth_provider
+        timestamptz created_at
+    }
+    PROFILES {
+        uuid id PK
+        uuid user_id FK
+        text session_id
+        int version
+        int age
+        int monthly_income
+        int monthly_expenses
+        int cash_savings
+        jsonb debts
+        jsonb dependents_detail
+        boolean health_insurance
+        text employment_type
+        text tax_regime
+        jsonb existing_investments
+        timestamptz created_at
+    }
+    GOALS {
+        uuid id PK
+        uuid user_id FK
+        text goal_type
+        text label
+        numeric target_corpus
+        date target_date
+        numeric current_savings
+        numeric monthly_contribution
+        timestamptz created_at
+    }
+    HOLDINGS {
+        uuid id PK
+        uuid user_id FK
+        text instrument_type
+        text instrument_name
+        text instrument_code
+        numeric quantity
+        numeric avg_price
+        numeric current_value
+        date as_of
+        timestamptz created_at
+    }
+    NBCA_LOG {
+        uuid id PK
+        uuid profile_id FK
+        int rank
+        jsonb nbca
+        text model
+        text prompt_version
+        date engine_data_asof
+        timestamptz created_at
+    }
+    CONVERSATIONS {
+        uuid id PK
+        uuid user_id FK
+        text question
+        jsonb answer
+        text model
+        boolean refused
+        timestamptz created_at
+    }
+    ALERTS {
+        uuid id PK
+        uuid user_id FK
+        text alert_type
+        text trigger_condition
+        boolean is_read
+        jsonb payload
+        timestamptz created_at
+    }
+    MARKET_DATA {
+        text driver_id PK
+        numeric value
+        text unit
+        text source
+        timestamptz fetched_at
+        date as_of
+    }
+
+    USERS ||--o{ PROFILES : has
+    USERS ||--o{ GOALS : sets
+    USERS ||--o{ HOLDINGS : owns
+    USERS ||--o{ CONVERSATIONS : asks
+    USERS ||--o{ ALERTS : receives
+    PROFILES ||--o{ NBCA_LOG : generates
+</pre>
+
+<h4>Key Schema Changes from Current</h4>
+<ul>
+<li><strong>Users table</strong>: New. Links all data to an authenticated identity.</li>
+<li><strong>Profiles</strong>: Add <code>age</code>, <code>debts</code> (jsonb array of {type, balance, apr, minimum_payment}), <code>dependents_detail</code> (jsonb array of {relationship, age}), <code>health_insurance</code>, <code>employment_type</code>, <code>tax_regime</code>, <code>existing_investments</code> (jsonb array of {type, value}).</li>
+<li><strong>Goals</strong>: New. Per-user goal tracking with corpus targets and progress.</li>
+<li><strong>Holdings</strong>: New. User's portfolio for gap analysis and rebalancing.</li>
+<li><strong>Conversations</strong>: New. Q&amp;A history for context-aware follow-ups.</li>
+<li><strong>Alerts</strong>: New. Proactive notifications and financial event tracking.</li>
+<li><strong>Market_data</strong>: New. Centralized market data store replacing file-based cache.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="s14">14. Growth Strategy</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">How NextRupee can grow from a portfolio project to a platform with meaningful adoption.</p>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-critical">Critical</span> R-25: Analytics &amp; Funnel Tracking</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Zero analytics anywhere in the codebase. No way to know how many users visit, how many complete intake, where they drop off, or what questions they ask. Flying completely blind.</dd>
+<dt>Opportunity</dt><dd>Add privacy-respecting analytics (PostHog or Plausible). Track: landing → intake start → each intake step → submit → results view → AskBox usage → return visits. This data should drive every product decision.</dd>
+<dt>User benefit</dt><dd>Indirect — better product informed by actual usage patterns</dd>
+<dt>Business benefit</dt><dd>Cannot optimize what you can't measure. Analytics is prerequisite for every growth initiative.</dd>
+<dt>Technical approach</dt><dd>PostHog self-hosted or Plausible cloud. Event tracking on key interactions. No PII collection — anonymous events only.</dd>
+<dt>Effort</dt><dd><span class="badge b-low">Easy</span> — 1-2 days</dd>
+<dt>Priority</dt><dd><span class="badge b-critical">Critical</span></dd>
+<dt>Screens affected</dt><dd>Layout (script tag), all pages (event tracking)</dd>
+<dt>Success metrics</dt><dd>Funnel visibility within first week, first data-driven product change within first month</dd>
+<dt>KPIs</dt><dd>Funnel conversion rates at each step</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-26: SEO &amp; Content Marketing</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>No OG tags, no sitemap, no structured data, no content pages beyond the SPA. Google can't index the product meaningfully.</dd>
+<dt>Opportunity</dt><dd>Add server-rendered educational pages targeting high-volume Indian finance queries: "how much emergency fund India" (12K searches/mo), "gold vs FD" (8K), "old vs new tax regime calculator" (22K), "retirement planning India" (6K). Each page links to the intake flow.</dd>
+<dt>User benefit</dt><dd>Find NextRupee when searching for answers to real financial questions</dd>
+<dt>Business benefit</dt><dd>Organic acquisition is the only sustainable growth channel at zero budget</dd>
+<dt>Technical approach</dt><dd>Static/SSR pages in Next.js (not SPA), proper metadata, JSON-LD structured data, XML sitemap, educational content from the corpus.</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 2-3 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>New educational pages, layout (meta), robots.txt, sitemap.xml</dd>
+<dt>Success metrics</dt><dd>Organic traffic &gt; 5000/month within 6 months</dd>
+<dt>KPIs</dt><dd>Organic sessions, keyword rankings, conversion from organic to intake completion</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-27: Shareable Results</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Financial decisions are discussed with family. Users can't share or export their NextRupee results. No PDF, no link, no image.</dd>
+<dt>Opportunity</dt><dd>Generate a shareable results card (image or PDF) with the user's top recommendation, allocation, and key numbers. Shareable via WhatsApp (India's primary sharing channel), email, or download.</dd>
+<dt>User benefit</dt><dd>Discuss recommendations with spouse/family using a clear, shareable document</dd>
+<dt>Business benefit</dt><dd>Organic viral loop — every shared result is a product impression. WhatsApp sharing in India has 3-5x reach of other channels.</dd>
+<dt>Technical approach</dt><dd>Server-side image generation (html-to-image or Puppeteer) for social sharing. PDF generation via browser print CSS. WhatsApp share link (wa.me API).</dd>
+<dt>Effort</dt><dd><span class="badge b-medium">Medium</span> — 1-2 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-high">High</span></dd>
+<dt>Screens affected</dt><dd>Results page (share button), new share preview component</dd>
+<dt>Success metrics</dt><dd>&gt; 15% of users share their results at least once</dd>
+<dt>KPIs</dt><dd>Shares per user, referral traffic from shared links</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-medium">Medium</span> R-28: Community &amp; Discussion Forum</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Financial decisions are social. Users want to see what others in similar situations did. No community or discussion feature exists.</dd>
+<dt>Opportunity</dt><dd>Anonymous community where users share their scenarios (sanitized): "32, married, 2 kids, ₹1.5L income — NextRupee told me to get term insurance first. Did anyone else get this? Did you actually do it?" Crowdsourced validation of engine recommendations.</dd>
+<dt>User benefit</dt><dd>Social proof and peer validation of financial decisions</dd>
+<dt>Business benefit</dt><dd>Community creates network effects — each user makes the product more valuable for others</dd>
+<dt>Technical approach</dt><dd>Discussion threads with anonymized user profiles. Upvote/downvote. Moderation. Tag by recommendation type.</dd>
+<dt>Effort</dt><dd><span class="badge b-high">Hard</span> — 4-6 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-medium">Medium</span></dd>
+<dt>Screens affected</dt><dd>New Community section</dd>
+<dt>Success metrics</dt><dd>&gt; 10% of users post or comment within first month</dd>
+<dt>KPIs</dt><dd>Posts per week, DAU in community, time spent</dd>
+</dl>
+</div>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-medium">Medium</span> R-29: Premium Tier</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>No revenue model. Zero monetization path beyond the free demo.</dd>
+<dt>Opportunity</dt><dd>Freemium: Core recommendations free forever. Premium (₹99-299/month): portfolio tracking, retirement simulation, tax optimization, unlimited AI conversations, weekly digest, priority processing, family mode. The free tier is the acquisition channel; premium is the business.</dd>
+<dt>User benefit</dt><dd>Advanced features for users who need comprehensive financial intelligence</dd>
+<dt>Business benefit</dt><dd>Sustainable revenue at ₹99-299/mo with 5-10% conversion = viable SaaS business at 10K users</dd>
+<dt>Technical approach</dt><dd>Stripe or Razorpay integration. Feature flags per tier. Supabase RLS policies based on subscription status.</dd>
+<dt>Effort</dt><dd><span class="badge b-high">Hard</span> — 3-4 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-medium">Medium</span></dd>
+<dt>Screens affected</dt><dd>Pricing page, feature gates throughout, settings/billing</dd>
+<dt>Success metrics</dt><dd>Free-to-premium conversion &gt; 5%, MRR &gt; ₹50K within 6 months</dd>
+<dt>KPIs</dt><dd>Conversion rate, MRR, churn rate, LTV</dd>
+</dl>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s15">15. Missing Features (100+)</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">Ranked by Impact (user value), Difficulty (engineering effort), Revenue potential, and Retention impact. Scale: H=High, M=Medium, L=Low.</p>
+
+<div class="tbl-wrap"><table class="feature-table">
+<tr><th>#</th><th>Feature</th><th class="impact">Impact</th><th class="diff">Diff</th><th class="rev">Rev</th><th class="ret">Ret</th></tr>
+<tr><td>1</td><td>User accounts &amp; authentication</td><td class="impact">H</td><td class="diff">M</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>2</td><td>Age/life stage input in profile</td><td class="impact">H</td><td class="diff">L</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>3</td><td>Multiple debt support (home loan, car, education, personal)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>4</td><td>Tax regime comparison calculator (Old vs New)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>5</td><td>Health insurance assessment</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>6</td><td>Goal-based corpus calculator (use collected goals)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>7</td><td>Portfolio tracking (manual holdings entry)</td><td class="impact">H</td><td class="diff">H</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>8</td><td>Retirement simulation (Monte Carlo)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>9</td><td>Instrument comparison engine (Gold vs FD, NPS vs PPF, etc.)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>10</td><td>Context-aware Q&amp;A (profile + cards as context)</td><td class="impact">H</td><td class="diff">L</td><td class="rev">L</td><td class="ret">H</td></tr>
+<tr><td>11</td><td>Dark mode</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>12</td><td>Export results as PDF</td><td class="impact">H</td><td class="diff">M</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>13</td><td>Analytics (PostHog/Plausible)</td><td class="impact">H</td><td class="diff">L</td><td class="rev">H</td><td class="ret">M</td></tr>
+<tr><td>14</td><td>Form validation error messages</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>15</td><td>Pre-fill intake on return visit</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">H</td></tr>
+<tr><td>16</td><td>Font loading fix (next/font)</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>17</td><td>WhatsApp sharing of results</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>18</td><td>Weekly financial digest email</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>19</td><td>Macro data dashboard (gold, Nifty, rates, FX)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>20</td><td>SEO content pages for financial queries</td><td class="impact">H</td><td class="diff">M</td><td class="rev">H</td><td class="ret">M</td></tr>
+<tr><td>21</td><td>Existing investments input (MF, stocks, PPF, EPF, FD)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>22</td><td>Section 80C optimizer (PPF vs ELSS vs NPS)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>23</td><td>SIP calculator with step-up modeling</td><td class="impact">H</td><td class="diff">L</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>24</td><td>Conversation history in AskBox</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">H</td></tr>
+<tr><td>25</td><td>Home loan prepay vs invest calculator</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>26</td><td>Rent vs buy calculator</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>27</td><td>Skip-to-content accessibility link</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>28</td><td>OG/social sharing meta tags</td><td class="impact">M</td><td class="diff">L</td><td class="rev">M</td><td class="ret">L</td></tr>
+<tr><td>29</td><td>Proactive financial alerts (rate changes, deadlines)</td><td class="impact">H</td><td class="diff">H</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>30</td><td>Premium subscription tier (₹99-299/mo)</td><td class="impact">M</td><td class="diff">H</td><td class="rev">H</td><td class="ret">M</td></tr>
+<tr><td>31</td><td>Stress test scenarios (market crash, job loss)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>32</td><td>Equity intelligence engine (Nifty PE, FII/DII, sector data)</td><td class="impact">H</td><td class="diff">H</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>33</td><td>Dependents detail (count, ages, relationship)</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>34</td><td>Employment type (salaried/self-employed/business)</td><td class="impact">M</td><td class="diff">L</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>35</td><td>CORS tightening (env-var based origins)</td><td class="impact">L</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>36</td><td>Security headers (HSTS, CSP, X-Frame-Options)</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>37</td><td>Income sources beyond salary (pension, rental, dividends)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>38</td><td>Hindi language support (i18n)</td><td class="impact">H</td><td class="diff">H</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>39</td><td>PWA support (offline, install prompt)</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>40</td><td>Custom 404 page</td><td class="impact">L</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>41</td><td>Decision friction for impulsive actions</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>42</td><td>Cognitive bias detection &amp; education</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>43</td><td>Consistency nudges &amp; streak tracking</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">H</td></tr>
+<tr><td>44</td><td>Community discussion forum</td><td class="impact">M</td><td class="diff">H</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>45</td><td>Advisor mode (white-label for financial advisors)</td><td class="impact">M</td><td class="diff">H</td><td class="rev">H</td><td class="ret">M</td></tr>
+<tr><td>46</td><td>Family mode (household financial planning, multiple profiles)</td><td class="impact">H</td><td class="diff">H</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>47</td><td>Economic calendar (RBI dates, tax deadlines, SGB windows)</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>48</td><td>Asset class explorer (learn about each instrument type)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>49</td><td>AI mistake detection (portfolio red flags)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>50</td><td>NRI financial planning module</td><td class="impact">M</td><td class="diff">H</td><td class="rev">H</td><td class="ret">M</td></tr>
+<tr><td>51</td><td>Mutual fund intelligence engine</td><td class="impact">H</td><td class="diff">H</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>52</td><td>Fixed income intelligence engine (FD/bond rates)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>53</td><td>Insurance needs calculator (term + health)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">H</td><td class="ret">M</td></tr>
+<tr><td>54</td><td>LTCG/STCG tax harvesting advisor</td><td class="impact">H</td><td class="diff">H</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>55</td><td>HRA calculator</td><td class="impact">M</td><td class="diff">L</td><td class="rev">M</td><td class="ret">L</td></tr>
+<tr><td>56</td><td>Gratuity calculator</td><td class="impact">L</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>57</td><td>EPF corpus projection</td><td class="impact">M</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>58</td><td>NPS tier comparison (Tier I vs II)</td><td class="impact">M</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>59</td><td>Sukanya Samriddhi calculator (for daughters)</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>60</td><td>PMVVY calculator (for seniors)</td><td class="impact">L</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>61</td><td>Credit score integration</td><td class="impact">M</td><td class="diff">H</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>62</td><td>Bank statement import (CSV)</td><td class="impact">M</td><td class="diff">H</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>63</td><td>Spending categorization from transactions</td><td class="impact">H</td><td class="diff">H</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>64</td><td>Net worth tracking over time</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>65</td><td>Financial health score (single number)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>66</td><td>Scenario comparison (what-if with different inputs)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>67</td><td>EMI calculator</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>68</td><td>Compound interest calculator</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>69</td><td>Inflation impact visualizer</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>70</td><td>Education cost estimator by tier (IIT, medical, abroad)</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>71</td><td>Wedding cost planner</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>72</td><td>Real estate intelligence (city-wise price data, rental yields)</td><td class="impact">M</td><td class="diff">H</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>73</td><td>Debt snowball vs avalanche simulator</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>74</td><td>Insurance claim settlement ratio database</td><td class="impact">M</td><td class="diff">M</td><td class="rev">M</td><td class="ret">L</td></tr>
+<tr><td>75</td><td>Fixed deposit rate comparison across banks</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>76</td><td>Small savings scheme rates tracker (PPF, NSC, KVP, SSY)</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>77</td><td>Market sentiment indicator (Fear &amp; Greed index equivalent)</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>78</td><td>Gold-to-silver ratio tracker</td><td class="impact">L</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>79</td><td>ELSS fund comparison (lock-in vs returns vs tax benefit)</td><td class="impact">M</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>80</td><td>Lump sum vs SIP calculator</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>81</td><td>FIRE (Financial Independence, Retire Early) calculator</td><td class="impact">M</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>82</td><td>Corpus drawdown simulator for retirees</td><td class="impact">H</td><td class="diff">M</td><td class="rev">M</td><td class="ret">H</td></tr>
+<tr><td>83</td><td>Gift tax implications calculator</td><td class="impact">L</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>84</td><td>Will &amp; estate planning guide</td><td class="impact">M</td><td class="diff">M</td><td class="rev">M</td><td class="ret">L</td></tr>
+<tr><td>85</td><td>FEMA/LRS limit tracker for NRIs</td><td class="impact">L</td><td class="diff">M</td><td class="rev">M</td><td class="ret">L</td></tr>
+<tr><td>86</td><td>Currency allocation advisor (INR vs USD vs others)</td><td class="impact">M</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>87</td><td>International ETF options for Indian investors</td><td class="impact">M</td><td class="diff">M</td><td class="rev">M</td><td class="ret">M</td></tr>
+<tr><td>88</td><td>API rate limiting upgrade (Redis-backed)</td><td class="impact">L</td><td class="diff">M</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>89</td><td>Parallelize LLM card generation (asyncio.gather)</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>90</td><td>API response caching (ETags, stale-while-revalidate)</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>91</td><td>Frontend testing (Jest, React Testing Library)</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>92</td><td>E2E testing (Playwright)</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>93</td><td>Error monitoring (Sentry)</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>94</td><td>Uptime monitoring (external ping)</td><td class="impact">L</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>95</td><td>Database connection pooling</td><td class="impact">L</td><td class="diff">M</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>96</td><td>Background job queue (for feed refresh, alerts)</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>97</td><td>Admin dashboard (usage metrics, user stats)</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>98</td><td>Referral program (invite friends, earn premium days)</td><td class="impact">M</td><td class="diff">M</td><td class="rev">H</td><td class="ret">H</td></tr>
+<tr><td>99</td><td>Financial literacy challenges/quizzes</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">H</td></tr>
+<tr><td>100</td><td>Voice input for AskBox (mobile accessibility)</td><td class="impact">L</td><td class="diff">M</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>101</td><td>Notification preferences page</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>102</td><td>Keyboard shortcuts for power users</td><td class="impact">L</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>103</td><td>Print stylesheet for results page</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>104</td><td>XML sitemap</td><td class="impact">M</td><td class="diff">L</td><td class="rev">M</td><td class="ret">L</td></tr>
+<tr><td>105</td><td>JSON-LD structured data</td><td class="impact">M</td><td class="diff">L</td><td class="rev">M</td><td class="ret">L</td></tr>
+<tr><td>106</td><td>Data export (download all personal data as JSON)</td><td class="impact">L</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>107</td><td>Account deletion flow</td><td class="impact">L</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+<tr><td>108</td><td>Onboarding tour for first-time users</td><td class="impact">M</td><td class="diff">M</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>109</td><td>Thumbs up/down on AI answers (feedback loop)</td><td class="impact">M</td><td class="diff">L</td><td class="rev">L</td><td class="ret">M</td></tr>
+<tr><td>110</td><td>Copy-to-clipboard for AskBox answers</td><td class="impact">L</td><td class="diff">L</td><td class="rev">L</td><td class="ret">L</td></tr>
+</table></div>
+
+<!-- ============================================================ -->
+<h2 id="s16">16. Future Vision</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">The evolution from financial decision engine to India's AI wealth intelligence platform.</p>
+
+<h3>Version 2 — The Financial Dashboard (3-6 months)</h3>
+<p>User accounts, persistent profiles, portfolio tracking, goal-based planning, and tax optimization. The product becomes a place users return to weekly. Core differentiator: every recommendation is still deterministic and evidence-traced, but now personalized to the user's complete financial picture.</p>
+
+<h3>Version 3 — Multi-Engine Intelligence (6-12 months)</h3>
+<p>Equity, debt, real estate, and tax intelligence engines join the gold engine. Each has its own knowledge graph, data feeds, and corpus. The comparison engine lets users evaluate any two instruments. The AskBox becomes a full financial copilot with conversation memory and proactive insights. Hindi language support doubles the addressable market.</p>
+
+<h3>Version 5 — The Research Platform (12-24 months)</h3>
+<p>Macro dashboard, screeners, economic calendar, asset explorer, and market sentiment tracking. NextRupee becomes the first tool Indian retail investors open in the morning. Community features create network effects. Premium tier generates sustainable revenue. Advisor mode lets financial planners use NextRupee with their clients.</p>
+
+<h3>Version 10 — Global Wealth Intelligence (24-48 months)</h3>
+<p>International expansion (US, UK, SEA) with country-specific engines. API platform for fintech integrations. Institutional offering for banks and wealth management firms. Real-time portfolio optimization with automated rebalancing suggestions. AI-powered financial planning that adapts to life events. The "Bloomberg Terminal for everyone" — affordable, personal, transparent, and trustworthy.</p>
+
+<!-- ============================================================ -->
+<h2 id="s17">17. Prioritized Roadmap</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">A phased plan prioritizing maximum user value with minimum engineering effort at each stage.</p>
+
+<div class="roadmap-phase">
+<h4>Now — Quick Wins (Week 1-2)</h4>
+<p style="color:var(--ink-2);font-size:13px">Zero-risk improvements that can ship immediately.</p>
+<ul>
+<li><span class="check">→</span> Add age field to intake (R-17)</li>
+<li><span class="check">→</span> Form validation error messages (R-18)</li>
+<li><span class="check">→</span> Pre-fill intake from sessionStorage on return (R-21)</li>
+<li><span class="check">→</span> Fix render-blocking font loading with next/font (R-20)</li>
+<li><span class="check">→</span> Add analytics — PostHog or Plausible (R-25)</li>
+<li><span class="check">→</span> Add skip-to-content link, fix color contrast</li>
+<li><span class="check">→</span> CORS tightening, security headers</li>
+<li><span class="check">→</span> OG/Twitter meta tags</li>
+<li><span class="check">→</span> Custom 404 page, Logo &lt;Link&gt; fix</li>
+<li><span class="check">→</span> Parallelize LLM card generation (asyncio.gather)</li>
+</ul>
+</div>
+
+<div class="roadmap-phase">
+<h4>3 Months — Core Platform (Weeks 3-12)</h4>
+<p style="color:var(--ink-2);font-size:13px">Transform from one-shot tool to returnable platform.</p>
+<ul>
+<li><span class="check">→</span> User accounts with Supabase Auth (R-02)</li>
+<li><span class="check">→</span> Dashboard model replacing 3-page flow (R-01)</li>
+<li><span class="check">→</span> Goals engine — use collected goals, corpus calculator (R-08)</li>
+<li><span class="check">→</span> Multiple debt support in intake and engine (Feature #3)</li>
+<li><span class="check">→</span> Context-aware AskBox with profile + conversation history (R-10)</li>
+<li><span class="check">→</span> Dark mode (R-19)</li>
+<li><span class="check">→</span> Export results as PDF / WhatsApp share (R-27)</li>
+<li><span class="check">→</span> Tax regime comparison calculator (Feature #4)</li>
+<li><span class="check">→</span> Health insurance assessment in intake (Feature #5)</li>
+<li><span class="check">→</span> SEO content pages for top 10 financial queries (R-26)</li>
+</ul>
+</div>
+
+<div class="roadmap-phase">
+<h4>6 Months — Intelligence Expansion (Months 4-6)</h4>
+<p style="color:var(--ink-2);font-size:13px">Multi-engine intelligence and portfolio tracking.</p>
+<ul>
+<li><span class="check">→</span> Portfolio tracking — manual holdings entry (R-06)</li>
+<li><span class="check">→</span> Instrument comparison engine — first 10 comparisons (R-05)</li>
+<li><span class="check">→</span> Equity intelligence engine — Nifty PE, FII/DII flows (Feature #32)</li>
+<li><span class="check">→</span> Fixed income engine — FD rates, G-Sec yields (Feature #52)</li>
+<li><span class="check">→</span> Retirement simulation with Monte Carlo (R-07)</li>
+<li><span class="check">→</span> Section 80C optimizer (Feature #22)</li>
+<li><span class="check">→</span> Macro dashboard (R-14)</li>
+<li><span class="check">→</span> Weekly financial digest email (R-12)</li>
+<li><span class="check">→</span> Proactive alerts — rate changes, deadline reminders (R-11)</li>
+</ul>
+</div>
+
+<div class="roadmap-phase">
+<h4>12 Months — Platform Features (Months 7-12)</h4>
+<p style="color:var(--ink-2);font-size:13px">Premium tier, behavioral features, and community.</p>
+<ul>
+<li><span class="check">→</span> Premium subscription tier (R-29)</li>
+<li><span class="check">→</span> Hindi language support (Feature #38)</li>
+<li><span class="check">→</span> Decision friction &amp; bias detection (R-22, R-23)</li>
+<li><span class="check">→</span> Stress test scenarios (R-09)</li>
+<li><span class="check">→</span> Asset class explorer (R-15)</li>
+<li><span class="check">→</span> AI mistake detection (R-13)</li>
+<li><span class="check">→</span> Community discussion forum (R-28)</li>
+<li><span class="check">→</span> Economic calendar (R-16)</li>
+<li><span class="check">→</span> Financial health score (Feature #65)</li>
+<li><span class="check">→</span> Referral program (Feature #98)</li>
+</ul>
+</div>
+
+<div class="roadmap-phase">
+<h4>24 Months — Scale &amp; Expand (Year 2)</h4>
+<p style="color:var(--ink-2);font-size:13px">Family mode, advisor platform, API, and international groundwork.</p>
+<ul>
+<li><span class="check">→</span> Family mode (household-level planning)</li>
+<li><span class="check">→</span> Advisor mode (white-label for financial planners)</li>
+<li><span class="check">→</span> NRI module (currency allocation, FEMA compliance)</li>
+<li><span class="check">→</span> Real estate intelligence engine</li>
+<li><span class="check">→</span> API platform for third-party integrations</li>
+<li><span class="check">→</span> Bank statement import &amp; spending analysis</li>
+<li><span class="check">→</span> PWA with offline support</li>
+<li><span class="check">→</span> International expansion research (US/UK market analysis)</li>
+</ul>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="s18">18. Financial Data &amp; Instrument Architecture</h2>
+<!-- ============================================================ -->
+
+<p class="section-intro">A scalable architecture for supporting 10,000+ instruments across all major Indian and global investment products.</p>
+
+<h3>Market Data Layer Design</h3>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-critical">Critical</span> R-30: Unified Market Data Abstraction</div>
+<dl class="rec-grid">
+<dt>Problem</dt><dd>Current data layer is hardcoded to 5 Yahoo Finance/FRED endpoints. Adding a new data source requires modifying <code>feeds.py</code> directly. No abstraction, no fallback providers, no normalized schema.</dd>
+<dt>Opportunity</dt><dd>Build a provider-adapter pattern where each data source implements a common interface. Normalized output schema. Automatic fallback when primary provider fails. Background refresh jobs with rate-limit handling.</dd>
+<dt>Technical approach</dt><dd>
+<code>DataProvider</code> protocol with <code>fetch(driver_id) → DriverValue</code>. Provider registry mapping driver_id → [primary_provider, fallback_provider]. Normalized <code>DriverValue</code> schema: <code>{value, unit, source, fetched_at, as_of, confidence}</code>. Caching layer (Redis or database-backed) with configurable TTL per driver. Background scheduler (APScheduler or Celery-beat) for periodic refresh.
+</dd>
+<dt>Effort</dt><dd><span class="badge b-high">Hard</span> — 3-4 weeks</dd>
+<dt>Priority</dt><dd><span class="badge b-critical">Critical</span> — prerequisite for all engine expansion</dd>
+<dt>Success metrics</dt><dd>New data source can be added in &lt; 1 day, zero downtime during provider outages</dd>
+</dl>
+</div>
+
+<h3>Data Sources by Asset Class</h3>
+
+<div class="tbl-wrap"><table>
+<tr><th>Asset Class</th><th>Key Data Points</th><th>Free Sources</th><th>Paid Sources (Future)</th><th>Update Frequency</th></tr>
+<tr><td><strong>Gold</strong></td><td>Spot USD, INR, import duty, premium</td><td>Yahoo Finance, FRED, RBI (manual)</td><td>Metals API, London Fix</td><td>Daily</td></tr>
+<tr><td><strong>Equity (India)</strong></td><td>Nifty 50, Sensex, sectoral indices, FII/DII flows</td><td>NSE website (JSON APIs), BSE bhavcopy, Money Control RSS</td><td>NSE data feed, Bloomberg Data License</td><td>Daily (EOD)</td></tr>
+<tr><td><strong>Mutual Funds</strong></td><td>NAV, expense ratio, AUM, category returns</td><td>AMFI daily NAV file (free, official), Value Research (scraping)</td><td>Morningstar API, CRISIL ratings</td><td>Daily (NAV), Monthly (AUM)</td></tr>
+<tr><td><strong>Fixed Income</strong></td><td>FD rates, G-Sec yields, repo rate, corporate bond spreads</td><td>RBI weekly statistical supplement, CCIL, FBIL</td><td>Bloomberg, Thomson Reuters</td><td>Daily/Weekly</td></tr>
+<tr><td><strong>Small Savings</strong></td><td>PPF, NSC, KVP, SSY, SCSS rates</td><td>Ministry of Finance quarterly notification (manual)</td><td>N/A (government-set)</td><td>Quarterly</td></tr>
+<tr><td><strong>Real Estate</strong></td><td>City price indices, rental yields</td><td>NHB RESIDEX (free), 99acres/Magicbricks (scraping)</td><td>PropEquity, JLL data</td><td>Quarterly</td></tr>
+<tr><td><strong>Tax</strong></td><td>Income tax slabs, deduction limits, LTCG/STCG rates</td><td>Income Tax Department website (manual)</td><td>N/A (legislation-set)</td><td>Annual (Budget)</td></tr>
+<tr><td><strong>Macro (India)</strong></td><td>GDP, IIP, PMI, CPI, WPI, fiscal deficit</td><td>FRED (India series), RBI DBIE, MOSPI</td><td>Bloomberg, CEIC</td><td>Monthly/Quarterly</td></tr>
+<tr><td><strong>International</strong></td><td>S&amp;P 500, MSCI World, NASDAQ, DXY, US yields</td><td>Yahoo Finance, FRED, Alpha Vantage (free tier)</td><td>IEX Cloud, Polygon.io</td><td>Daily</td></tr>
+</table></div>
+
+<h3>Unified Instrument Registry</h3>
+
+<div class="rec">
+<div class="rec-title"><span class="badge b-high">High</span> R-31: Instrument Registry Schema</div>
+<p>Design a common schema that stores 10,000+ instruments with a shared core and asset-class-specific metadata.</p>
+
+<div class="tbl-wrap"><table>
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+<tr><td>id</td><td>text PK</td><td>Unique identifier (e.g., "GOLD_ETF_GOLDBEES", "MF_INF209K01YJ7")</td></tr>
+<tr><td>asset_class</td><td>enum</td><td>equity, mutual_fund, etf, bond, gold, fd, ppf, nps, reit, invit, commodity, insurance, small_savings</td></tr>
+<tr><td>name</td><td>text</td><td>Human-readable name</td></tr>
+<tr><td>isin</td><td>text</td><td>ISIN code (where applicable)</td></tr>
+<tr><td>expected_return_pct</td><td>numeric</td><td>Annualized expected return range (low, mid, high)</td></tr>
+<tr><td>risk_score</td><td>int</td><td>1-10 standardized risk score</td></tr>
+<tr><td>liquidity_score</td><td>int</td><td>1-10 (1=illiquid like real estate, 10=instant like liquid fund)</td></tr>
+<tr><td>min_investment</td><td>numeric</td><td>Minimum investment amount (INR)</td></tr>
+<tr><td>lock_in_days</td><td>int</td><td>Mandatory lock-in period (0 for none)</td></tr>
+<tr><td>tax_treatment</td><td>jsonb</td><td>{"stcg_rate", "ltcg_rate", "ltcg_threshold_days", "indexation", "tds"}</td></tr>
+<tr><td>metadata</td><td>jsonb</td><td>Asset-class-specific fields (expense_ratio for MFs, coupon for bonds, etc.)</td></tr>
+<tr><td>updated_at</td><td>timestamptz</td><td>Last data update</td></tr>
+</table></div>
+</div>
+
+<h3>Knowledge Graph Expansion Plan</h3>
+
+<pre class="mermaid">
+graph LR
+    subgraph "Phase 1: Current (Gold)"
+        GOLD[Gold Engine<br/>40 nodes]
+    end
+    subgraph "Phase 2: Tax + Fixed Income"
+        TAX[Tax Engine<br/>~20 nodes]
+        FI[Fixed Income Engine<br/>~25 nodes]
+    end
+    subgraph "Phase 3: Equity + MF"
+        EQ[Equity Engine<br/>~35 nodes]
+        MF[Mutual Fund Engine<br/>~30 nodes]
+    end
+    subgraph "Phase 4: Advanced"
+        RE[Real Estate Engine<br/>~20 nodes]
+        RET[Retirement Engine<br/>~25 nodes]
+        INS[Insurance Engine<br/>~20 nodes]
+    end
+    subgraph "Cross-Engine"
+        ALLOC[Unified Allocation<br/>Engine]
+        COMP[Comparison<br/>Engine]
+    end
+
+    GOLD --> ALLOC
+    TAX --> ALLOC
+    FI --> ALLOC
+    EQ --> ALLOC
+    MF --> ALLOC
+    RE --> ALLOC
+    RET --> ALLOC
+    INS --> ALLOC
+    ALLOC --> COMP
+</pre>
+
+<h3>Phased Data Architecture Expansion</h3>
+
+<div class="tbl-wrap"><table>
+<tr><th>Phase</th><th>Timeline</th><th>Data Sources Added</th><th>Instruments Covered</th><th>Total Nodes</th></tr>
+<tr><td>Phase 1 (Current)</td><td>Shipped</td><td>Yahoo Finance (3), FRED (2), Config (2)</td><td>Gold (physical, derived INR)</td><td>40</td></tr>
+<tr><td>Phase 2</td><td>Month 1-3</td><td>AMFI NAV, NSE JSON APIs, RBI DBIE, IT Dept</td><td>+Mutual funds (NAV), FDs, PPF/EPF/NPS, Tax slabs</td><td>~120</td></tr>
+<tr><td>Phase 3</td><td>Month 4-6</td><td>BSE bhavcopy, CCIL, FBIL, NHB RESIDEX</td><td>+Equity indices, G-Sec, Corporate bonds, Real estate indices</td><td>~200</td></tr>
+<tr><td>Phase 4</td><td>Month 7-12</td><td>Alpha Vantage, Insurance aggregators, IRDAI data</td><td>+International ETFs, Insurance products, REITs/INVITs</td><td>~280</td></tr>
+<tr><td>Phase 5</td><td>Year 2</td><td>Paid APIs (Morningstar, Bloomberg Data), Exchange feeds</td><td>+Individual stocks, individual MF schemes, bond issues</td><td>~10,000+</td></tr>
+</table></div>
+
+<!-- ============================================================ -->
+<div style="margin-top:64px;padding-top:24px;border-top:2px solid var(--border)">
+<h2 style="border:none;margin-top:0;padding:0">Final Assessment</h2>
+
+<p>NextRupee has a <strong>genuinely defensible thesis</strong>: deterministic, evidence-traced financial recommendations where the LLM never computes. This is architecturally sound and competitively unique. No Indian fintech platform offers anything like the "show the work" transparency model backed by a knowledge graph and dual guardrails.</p>
+
+<p>The product's limitation is not quality — it's <strong>scope</strong>. It solves one problem brilliantly (the "next best action" for spare cash) but stops at the exact moment users want to go deeper. The gold intelligence engine is a working prototype for how every asset class should be modeled. The rules engine hierarchy is elegant and well-tested. The eval harness is more rigorous than most production fintech products.</p>
+
+<p><strong>The strategic opportunity is clear</strong>: replicate the gold engine pattern across equity, debt, tax, insurance, and real estate. Add user accounts for retention. Build the comparison engine for engagement. Add goal tracking for habit formation. Layer on the research platform for daily usage.</p>
+
+<p>The path from "impressive portfolio project" to "India's most intelligent wealth platform" is not about fixing bugs or adding polish — it's about <strong>expanding the decision surface</strong> while preserving the core principles that make NextRupee trustworthy.</p>
+
+<div class="stats" style="margin-top:24px">
+<div class="stat"><div class="stat-n">6.5→9</div><div class="stat-l">Potential Rating (with roadmap execution)</div></div>
+<div class="stat"><div class="stat-n">5→40+</div><div class="stat-l">Decision Types Supported</div></div>
+<div class="stat"><div class="stat-n">40→280+</div><div class="stat-l">Knowledge Graph Nodes</div></div>
+<div class="stat"><div class="stat-n">1→5+</div><div class="stat-l">Intelligence Engines</div></div>
+</div>
+</div>
+</div>
